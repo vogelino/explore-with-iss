@@ -1,33 +1,41 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as TodoActions from '../actions/todos'
+import * as Actions from '../actions/actions'
+import MainMap from '../components/MainMap'
+import Sidebar from '../components/Sidebar'
+import RoutePlayer from '../components/RoutePlayer'
 
 class App extends Component {
 	render() {
-		const { todos, actions } = this.props;
+		const { country, isTracking, iss, actions } = this.props;
 		return (
 			<div className="app">
-				<h1>Hello World</h1>
+				<MainMap />
+				<Sidebar />
+				<RoutePlayer />
 			</div>
 		)
 	}
 }
 
 App.propTypes = {
-	todos: PropTypes.array.isRequired,
-	actions: PropTypes.object.isRequired
+	country: PropTypes.object.isRequired,
+	isTracking: PropTypes.bool.isRequired,
+	iss: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => {
 	return {
-		todos: state.todos
+		country: state.dataVis.country,
+		isTracking: state.dataVis.isTracking,
+		iss: state.dataVis.iss
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		actions: bindActionCreators(TodoActions, dispatch)
+		actions: bindActionCreators(Actions, dispatch)
 	}
 }
 

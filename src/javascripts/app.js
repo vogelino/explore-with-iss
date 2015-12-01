@@ -6,12 +6,14 @@ import configureStore from './store/configureStore';
 
 const initApp = () => {
 	const store = configureStore()
-	render(
+	const dest = document.getElementById('root')
+	const component = (
 		<Provider store={store}>
 			<App />
-		</Provider>,
-		document.getElementById('root')
+		</Provider>
 	)
+
+	render(component, dest)
 };
 
 window.document.addEventListener('DOMContentLoaded', initApp);

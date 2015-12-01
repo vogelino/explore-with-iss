@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import todos from './todos'
+import dataVis from './reducers'
 
-const rootReducer = combineReducers({ todos })
+const rootReducer = combineReducers({ dataVis })
 
 export default rootReducer
