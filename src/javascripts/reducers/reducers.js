@@ -1,38 +1,38 @@
-import { SET_COUNTRY, TOGGLE_TRACKING } from '../constants/ActionTypes'
+import { SET_COUNTRY, UPDATE_ISS, TOGGLE_TRACKING } from '../constants/ActionTypes'
 
 const initialState = {
 	country: {
-		name: 'germany',
-		code: 'DE',
-		lat: 52.5167,
-		lon: 13.3833,
+		name: 'loading country',
+		code: '-',
+		lat: 0,
+		lon: 0,
 		infos: [
-			{ 'Capital': 'Berlin' },
-			{ 'Official languages': ['German'] },
-			{ 'Population': '81,083,600' },
-			{ 'Area': '357,168 km2' },
-			{ 'GDP': '$3.842 trillion' },
-			{ 'Currency': 'Euro (€)(EUR)' },
-			{ 'Timezone': 'CET (UTC+1)' }
+			{ 'Capital': '-' },
+			{ 'Official languages': ['-'] },
+			{ 'Population': '-' },
+			{ 'Area': '-' },
+			{ 'GDP': '-' },
+			{ 'Currency': '-' },
+			{ 'Timezone': '-' }
 		],
-		nextPass: 1449000576,
+		nextPass: 0,
 		issPhotos: [
 			{
-				title: 'Moon',
-				url: 'https://c1.staticflickr.com/1/292/20228269321_acc50f8c29_b.jpg'
+				title: 'loading photos',
+				url: '-'
 			}
 		],
 		news: [
 			{
-				title: 'German astronaut calls for \'peace and tolerance\'',
-				url: 'http://www.thelocal.de/20151120/german-astronaut-calls-for-peace-and-tolerance'
+				title: 'loading news',
+				url: '-'
 			}
 		]
 	},
 	isTracking: false,
 	iss: {
-		lat: 0,
-		lon: 0
+		latitude: 0,
+		longitude: 0
 	}
 }
 
@@ -40,6 +40,9 @@ export default function dataVis(state = initialState, action) {
 	switch (action.type) {
 		case SET_COUNTRY:
 			return Object.assign({}, state, { country: action.country })
+
+		case UPDATE_ISS:
+			return Object.assign({}, state, { iss: action.iss })
 
 		case TOGGLE_TRACKING:
 			return Object.assign({}, state, { isTracking: !state.isTracking })

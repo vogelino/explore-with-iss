@@ -17,6 +17,28 @@ class App extends Component {
 			</div>
 		)
 	}
+	componentDidMount() {
+		this.getIssPosition.bind(this)()
+		this.getIssCountry.bind(this)()
+	}
+	getIssPosition() {
+		fetch('http://localhost:8080/api/iss-position')
+			.then(this.parseResponse.bind(this))
+	}
+	getIssCountry() {
+		fetch('http://localhost:8080/api/iss-country')
+			.then(this.parseResponse.bind(this))
+	}
+	parseResponse(response) {
+		response.json()
+			.then(this.onFetchDone.bind(this))
+	}
+	onFetchDone(json) {
+		if (json.latitude && json.longitude)
+			this.props.actions.updateIss(json)
+		else
+			this.props.actions.setCountry(json)
+	}
 }
 
 App.propTypes = {

@@ -1,1 +1,3 @@
 export const SET_COUNTRY = 'SET_COUNTRY'
+export const TOGGLE_TRACKING = 'TOGGLE_TRACKING'
+export const UPDATE_ISS = 'UPDATE_ISS'
