@@ -9,6 +9,12 @@ import RoutePlayer from '../components/RoutePlayer'
 class App extends Component {
 	render() {
 		const { country, isTracking, iss, actions } = this.props;
+		if (isTracking) {
+			this.startTracking.bind(this)()
+		}
+		else {
+			this.stopTracking.bind(this)()
+		}
 		return (
 			<div className="app">
 				<MainMap />
@@ -18,14 +24,14 @@ class App extends Component {
 		)
 	}
 	componentDidMount() {
-		this.getIssPosition.bind(this)()
-		this.getIssCountry.bind(this)()
+		this.updateIssPosition.bind(this)()
+		this.updateIssCountry.bind(this)()
 	}
-	getIssPosition() {
+	updateIssPosition() {
 		fetch('http://localhost:8080/api/iss-position')
 			.then(this.parseResponse.bind(this))
 	}
-	getIssCountry() {
+	updateIssCountry() {
 		fetch('http://localhost:8080/api/iss-country')
 			.then(this.parseResponse.bind(this))
 	}
@@ -38,6 +44,14 @@ class App extends Component {
 			this.props.actions.updateIss(json)
 		else
 			this.props.actions.setCountry(json)
+	}
+	startTracking() {
+		this.stopTracking.bind(this)()
+		this.state.tracking = window.setInterval(this.updateIssPosition.bind(this), 2000)
+	}
+	stopTracking() {
+		if (this.state && this.state.tracking)
+			this.state.tracking = window.clearInterval(this.state.tracking)
 	}
 }
 

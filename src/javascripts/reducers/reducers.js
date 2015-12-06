@@ -2,32 +2,18 @@ import { SET_COUNTRY, UPDATE_ISS, TOGGLE_TRACKING } from '../constants/ActionTyp
 
 const initialState = {
 	country: {
-		name: 'loading country',
-		code: '-',
-		lat: 0,
-		lon: 0,
-		infos: [
-			{ 'Capital': '-' },
-			{ 'Official languages': ['-'] },
-			{ 'Population': '-' },
-			{ 'Area': '-' },
-			{ 'GDP': '-' },
-			{ 'Currency': '-' },
-			{ 'Timezone': '-' }
-		],
-		nextPass: 0,
-		issPhotos: [
-			{
-				title: 'loading photos',
-				url: '-'
-			}
-		],
-		news: [
-			{
-				title: 'loading news',
-				url: '-'
-			}
-		]
+		name: 'Loading Country',
+		capital: 'Loading',
+		population: 18006407,
+		latlng: [-30, -71],
+		area: 756102,
+		gini: 52.1,
+		timezones: [],
+		borders: [],
+		nativeName: 'Loading',
+		alpha2Code: '...',
+		currencies: ['...', '...'],
+		languages: ['...']
 	},
 	isTracking: false,
 	iss: {
