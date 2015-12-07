@@ -9,12 +9,6 @@ import RoutePlayer from '../components/RoutePlayer'
 class App extends Component {
 	render() {
 		const { country, isTracking, iss, actions } = this.props;
-		if (isTracking) {
-			this.startTracking.bind(this)()
-		}
-		else {
-			this.stopTracking.bind(this)()
-		}
 		return (
 			<div className="app">
 				<MainMap />
@@ -24,34 +18,52 @@ class App extends Component {
 		)
 	}
 	componentDidMount() {
-		this.updateIssPosition.bind(this)()
-		this.updateIssCountry.bind(this)()
+		this.updateIssPosition(this.onFetchPositionDone.bind(this))
+		this.updateIssCountry(this.onFetchCountryDone.bind(this))
+		this.startTracking()
 	}
-	updateIssPosition() {
-		fetch('http://localhost:8080/api/iss-position')
-			.then(this.parseResponse.bind(this))
+	updateIssPosition(cb) {
+		return fetch('http://localhost:8080/api/iss-country-code')
+			.then((response) => {
+				response.json()
+					.then(cb)
+			})
 	}
-	updateIssCountry() {
-		fetch('http://localhost:8080/api/iss-country')
-			.then(this.parseResponse.bind(this))
+	updateIssCountry(cb) {
+		return fetch('http://localhost:8080/api/iss-country')
+			.then((response) => {
+				response.json()
+					.then(cb)
+			})
 	}
-	parseResponse(response) {
-		response.json()
-			.then(this.onFetchDone.bind(this))
+	onFetchPositionDone(data) {
+		this.props.actions.updateIss(data)
+		return data
 	}
-	onFetchDone(json) {
-		if (json.latitude && json.longitude)
-			this.props.actions.updateIss(json)
-		else
-			this.props.actions.setCountry(json)
+	onFetchCountryDone(data) {
+		this.props.actions.setCountry(data)
+		return data
+	}
+	isIssPositionResponse(data) {
+		return data.latitude && data.longitude && data.countryCode
+	}
+	trackIss() {
+		this.updateIssPosition(this.checkAndUpdate.bind(this))
+	}
+	checkAndUpdate(data) {
+		this.onFetchPositionDone.bind(this)(data)
+		if (this.props.country.alpha2Code !== this.props.iss.countryCode)
+			this.updateIssCountry(this.onFetchCountryDone.bind(this))
 	}
 	startTracking() {
-		this.stopTracking.bind(this)()
-		this.state.tracking = window.setInterval(this.updateIssPosition.bind(this), 2000)
+		this.stopTracking()
+		this.setState({
+			issInterval: window.setInterval(this.trackIss.bind(this), 2000)
+		})
 	}
 	stopTracking() {
-		if (this.state && this.state.tracking)
-			this.state.tracking = window.clearInterval(this.state.tracking)
+		if (this.state && this.state.issInterval)
+			this.state.issInterval = window.clearInterval(this.state.issInterval)
 	}
 }
 

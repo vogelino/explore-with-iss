@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../actions/actions'
+import L from 'leaflet'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 
 class MainMap extends Component {
@@ -12,6 +13,10 @@ class MainMap extends Component {
 		return this.getMap.bind(this)()
 	}
 	getMap() {
+		const IssIcon = L.Icon.extend({
+			iconSize: [60, 32],
+			iconsAnchor: [-30, -16]
+		})
 		const issPosition = [this.props.iss.latitude, this.props.iss.longitude]
 		const countryPosition = this.props.country.latlng
 		const mapCenter = this.props.isTracking ? issPosition : countryPosition;
@@ -22,10 +27,11 @@ class MainMap extends Component {
 						url='http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
 						attribution=''
 					/>
-					<Marker position={issPosition}>
-						<Popup>
-							<span>Iss.</span>
-						</Popup>
+					<Marker
+						position={issPosition}
+						icon={new IssIcon({
+							iconUrl: 'https://www.calsky.com/observer/icons/icon-iss3.png'
+						})}>
 					</Marker>
 				</Map>
 			</div>
