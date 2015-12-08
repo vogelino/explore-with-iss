@@ -13,7 +13,8 @@ const initialState = {
 		nativeName: 'Loading',
 		alpha2Code: '...',
 		currencies: ['...', '...'],
-		languages: ['...']
+		languages: ['...'],
+		geoJson: false
 	},
 	isTracking: false,
 	iss: {
