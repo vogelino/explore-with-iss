@@ -5,24 +5,25 @@ import * as Actions from '../actions/actions'
 
 class Sidebar extends Component {
 	render() {
-		const country = this.props.country
+		const { country } = this.props
 		return (
 			<div className="main-sidebar">
-				<h1>
+				<h1 className="country-name">
 					{country.name}
-					<span>({country.nativeName})</span>
+					{country.name.toUpperCase() !== country.nativeName.toUpperCase() ?
+						<span className="country-native-name">({country.nativeName})</span> : ''}
 				</h1>
-				<h2>Counrty informations</h2>
-				<ul>
-					<li>
+				<h2 className="country-informations-title">Counrty informations</h2>
+				<ul className="country-information-list">
+					<li className="country-information-list-element country-capital">
 						<label>Capital</label>
 						{country.capital}
 					</li>
-					<li>
+					<li className="country-information-list-element country-population">
 						<label>Population</label>
 						{country.population}
 					</li>
-					<li>
+					<li className="country-information-list-element country-area">
 						<label>Area</label>
 						{country.area} Km<sup>2</sup>
 					</li>
