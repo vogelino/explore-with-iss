@@ -36,12 +36,14 @@ class MainMap extends Component {
 				<Map
 					center={mapCenter}
 					zoom={this.state.zoom}
-					minZoom={2}
+					dragging={false}
+					zoomControl={false}
 					onLeafletDragend={this.handleDragend.bind(this)}
 					onLeafletZoomend={this.handleZoomend.bind(this)} >
 					<TileLayer
-						url='http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-						attribution=''
+						url='http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
+						subdomains="abcd"
+						attribution={false}
 					/>
 					<Marker
 						position={issPosition}
