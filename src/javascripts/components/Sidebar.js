@@ -5,9 +5,16 @@ import * as Actions from '../actions/actions'
 
 class Sidebar extends Component {
 	render() {
-		const { country } = this.props
+		const { country, isIssOverflyingCountry } = this.props
 		return (
 			<div className="main-sidebar">
+				{isIssOverflyingCountry ? this.getCountryInfo.bind(this)(country) : ''}
+			</div>
+		)
+	}
+	getCountryInfo(country) {
+		return (
+			<div>
 				<h1 className="country-name">
 					{country.name}
 					{country.name.toUpperCase() !== country.nativeName.toUpperCase() ?
@@ -36,13 +43,17 @@ class Sidebar extends Component {
 Sidebar.propTypes = {
 	country: PropTypes.object.isRequired,
 	isTracking: PropTypes.bool.isRequired,
-	iss: PropTypes.object.isRequired
+	isIssOverflyingCountry: PropTypes.bool.isRequired,
+	iss: PropTypes.object.isRequired,
+	isIssPositionIdentified: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = (state) => {
 	return {
 		country: state.dataVis.country,
 		isTracking: state.dataVis.isTracking,
+		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
+		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
 		iss: state.dataVis.iss
 	}
 }

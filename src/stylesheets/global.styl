@@ -21,11 +21,19 @@ body,
 	width 100%
 	height 100%
 	box-sizing border-box
-	padding-left $sidebarWidth
-	padding-bottom $routePlayerHeight - 20
 	position absolute
 	top 0
 	right 0
+	transition padding 200ms ease
+	padding-left 20px
+	padding-bottom 20px
+
+	*
+		cursor default !important
+
+	.has-country &
+		padding-left $sidebarWidth
+		padding-bottom $routePlayerHeight - 20
 
 	.leaflet-container
 		width 100%
@@ -33,7 +41,8 @@ body,
 		position relative
 		float left
 
-	path.country-borders
+	path.country-borders,
+	path.iss-marker
 		stroke-width 1px
 		stroke turquoise
 		stroke-opacity .9
@@ -49,9 +58,13 @@ body,
 	padding 20px
 	position absolute
 	top 0
-	left 0
+	left $sidebarWidth * -1 + 20px
 	background #222222
 	color #ebebeb
+	transition left 200ms ease
+
+	.has-country &
+		left 0
 
 	.country-name,
 	.country-informations-title
@@ -88,7 +101,7 @@ body,
 .route-player
 	z-index 2
 	position absolute
-	bottom 0
+	bottom $routePlayerHeight * -1 + 20
 	right 0
 	width 100%
 	height $routePlayerHeight
@@ -97,3 +110,7 @@ body,
 	padding-left $sidebarWidth + 20
 	box-sizing border-box
 	color #ebebeb
+
+	.has-country &
+		bottom 0
+		transition bottom 200ms ease

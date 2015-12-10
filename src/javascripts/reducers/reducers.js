@@ -1,37 +1,30 @@
-import { SET_COUNTRY, UPDATE_ISS, TOGGLE_TRACKING } from '../constants/ActionTypes'
+import * as actionTypes from '../constants/ActionTypes'
 
 const initialState = {
-	country: {
-		name: 'Loading Country',
-		capital: 'Loading',
-		population: 18006407,
-		latlng: [-30, -71],
-		area: 756102,
-		gini: 52.1,
-		timezones: [],
-		borders: [],
-		nativeName: 'Loading',
-		alpha2Code: '...',
-		currencies: ['...', '...'],
-		languages: ['...'],
-		geoJson: false
-	},
+	country: {},
 	isTracking: false,
-	iss: {
-		latitude: 0,
-		longitude: 0
-	}
+	iss: {},
+	isIssOverflyingCountry: false,
+	isIssPositionIdentified: false
 }
 
 export default function dataVis(state = initialState, action) {
 	switch (action.type) {
-		case SET_COUNTRY:
-			return Object.assign({}, state, { country: action.country })
+		case actionTypes.SET_COUNTRY_INFOS:
+			return Object.assign({}, state, { country: action.infos })
 
-		case UPDATE_ISS:
-			return Object.assign({}, state, { iss: action.iss })
+		case actionTypes.SET_ISS_POSITION:
+			return Object.assign({}, state, { iss: action.position })
 
-		case TOGGLE_TRACKING:
+		case actionTypes.DEFINE_IF_ISS_POSITION_IS_IDENTIFIED:
+			return Object.assign({}, state,
+				{ isIssPositionIdentified: action.isDefined })
+
+		case actionTypes.DEFINE_IF_ISS_IS_OVERFLYING_COUNTRY:
+			return Object.assign({}, state,
+				{ isIssOverflyingCountry: action.isOverflyingCountry })
+
+		case actionTypes.TOGGLE_TRACKING:
 			return Object.assign({}, state, { isTracking: !state.isTracking })
 
 		default:

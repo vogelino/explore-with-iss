@@ -8,9 +8,10 @@ import RoutePlayer from '../components/RoutePlayer'
 
 class App extends Component {
 	render() {
-		const { country, isTracking, iss, actions } = this.props;
+		const { isIssOverflyingCountry } = this.props;
+
 		return (
-			<div className="app">
+			<div className={ isIssOverflyingCountry ? "app has-country" : "app"}>
 				<MainMap />
 				<Sidebar />
 				<RoutePlayer />
@@ -37,20 +38,34 @@ class App extends Component {
 			})
 	}
 	onFetchPositionDone(data) {
-		this.props.actions.updateIss(data)
+		const { actions } = this.props
+		if (data.status) {
+			actions.defineIfIssPositionIdentified(false)
+			actions.setIssPosition({})
+		}
+		else {
+			actions.setIssPosition(data)
+			actions.defineIfIssPositionIdentified(true)
+		}
 		return data
 	}
 	onFetchCountryDone(data) {
-		this.props.actions.setCountry(data)
+		const { actions } = this.props
+		if (data.status) {
+			actions.defineIfIssIsOverflyingCountry(false)
+			actions.setCountryInfos({})
+		}
+		else {
+			actions.setCountryInfos(data)
+			actions.defineIfIssIsOverflyingCountry(true)
+		}
 		return data
-	}
-	isIssPositionResponse(data) {
-		return data.latitude && data.longitude && data.countryCode
 	}
 	trackIss() {
 		this.updateIssPosition(this.checkAndUpdate.bind(this))
 	}
 	checkAndUpdate(data) {
+		if (data.status) return
 		this.onFetchPositionDone.bind(this)(data)
 		if (this.props.country.alpha2Code !== this.props.iss.countryCode)
 			this.updateIssCountry(this.onFetchCountryDone.bind(this))
@@ -70,13 +85,17 @@ class App extends Component {
 App.propTypes = {
 	country: PropTypes.object.isRequired,
 	isTracking: PropTypes.bool.isRequired,
-	iss: PropTypes.object.isRequired
+	isIssOverflyingCountry: PropTypes.bool.isRequired,
+	iss: PropTypes.object.isRequired,
+	isIssPositionIdentified: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = (state) => {
 	return {
 		country: state.dataVis.country,
 		isTracking: state.dataVis.isTracking,
+		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
+		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
 		iss: state.dataVis.iss
 	}
 }

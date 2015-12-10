@@ -3,88 +3,59 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../actions/actions'
 import L from 'leaflet'
-import { Map, Marker, Popup, TileLayer, GeoJson } from 'react-leaflet'
+import { Map, CircleMarker, Popup, TileLayer, GeoJson } from 'react-leaflet'
 
 class MainMap extends Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			zoom: 3,
-			center: this.props.country.latlng
-		}
-	}
 	render() {
-		if (this.props.country.name === 'Loading')
-			return <div>this.props.country.name</div>
+		const { iss, isTracking, country,
+			isIssPositionIdentified, isIssOverflyingCountry } = this.props
+		const issPosition = isIssPositionIdentified ?
+			[iss.latitude, iss.longitude] : [0, 0]
 
-		return this.getMap.bind(this)()
-	}
-	getMap() {
-		const { zoom, center } = this.state
-		const { iss, isTracking, country } = this.props
-
-		const IssIcon = L.Icon.extend({
-			iconSize: [60, 32],
-			iconAnchor: [30, 16]
-		})
-		const issPosition = [iss.latitude, iss.longitude]
-		const mapCenter = isTracking ? issPosition : center
-		const geoJsonData = country.geoJson
+		const doesCountryHaveGeoData = !!country.geoJson
+		const mapCenter = isTracking ? issPosition :
+			( isIssOverflyingCountry ? country.latlng : issPosition)
 		return (
 			<div className="main-map">
 				<Map
 					center={mapCenter}
-					zoom={this.state.zoom}
+					zoom={5}
 					dragging={false}
-					zoomControl={false}
-					onLeafletDragend={this.handleDragend.bind(this)}
-					onLeafletZoomend={this.handleZoomend.bind(this)} >
+					scrollWheelZoom={false}
+					zoomControl={false} >
 					<TileLayer
 						url='http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
 						subdomains="abcd"
 						attribution={false}
 					/>
-					<Marker
-						position={issPosition}
-						icon={new IssIcon({
-							iconUrl: 'https://www.calsky.com/observer/icons/icon-iss3.png'
-						})}>
-					</Marker>
-					{ !!geoJsonData ? <GeoJson data={geoJsonData} className="country-borders"/> : '' }
+					{isIssPositionIdentified ?
+						<CircleMarker
+							className="iss-marker"
+							center={issPosition}
+							radius={5}>
+						</CircleMarker> : ''}
+					{ isIssOverflyingCountry && doesCountryHaveGeoData ?
+						<GeoJson data={country.geoJson} className="country-borders"/> : '' }
 				</Map>
 			</div>
 		)
-	}
-	handleZoomend(e) {
-		this.setState({
-			zoom: e.target._zoom
-		})
-	}
-	handleDragend(e) {
-		const { isTracking, actions } = this.props
-		if (isTracking)
-			actions.toggleTracking()
-
-		const map = e.target
-		const centerPoint = map._getMapPanePos()
-		const latLng = map.containerPointToLatLng(centerPoint)
-		this.setState({
-			center: [latLng.lat, latLng.lng]
-		})
 	}
 }
 
 MainMap.propTypes = {
 	country: PropTypes.object.isRequired,
 	isTracking: PropTypes.bool.isRequired,
-	iss: PropTypes.object.isRequired
+	isIssOverflyingCountry: PropTypes.bool.isRequired,
+	iss: PropTypes.object.isRequired,
+	isIssPositionIdentified: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = (state) => {
 	return {
 		country: state.dataVis.country,
 		isTracking: state.dataVis.isTracking,
+		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
+		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
 		iss: state.dataVis.iss
 	}
 }
