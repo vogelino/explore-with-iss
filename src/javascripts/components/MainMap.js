@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import * as Actions from '../actions/actions'
 import L from 'leaflet'
 import { Map, CircleMarker, Popup, TileLayer, GeoJson } from 'react-leaflet'
+const geoJson = require('/data/counrtyShapes.json')
 
 class MainMap extends Component {
 	render() {
@@ -35,7 +36,7 @@ class MainMap extends Component {
 							radius={5}>
 						</CircleMarker> : ''}
 					{ isIssOverflyingCountry && doesCountryHaveGeoData ?
-						<GeoJson data={country.geoJson} className="country-borders"/> : '' }
+						<GeoJson data={geoJson} className="country-borders"/> : '' }
 				</Map>
 			</div>
 		)
