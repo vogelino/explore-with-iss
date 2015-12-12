@@ -2,7 +2,7 @@ import * as actionTypes from '../constants/ActionTypes'
 
 const initialState = {
 	country: {},
-	isTracking: false,
+	isTracking: true,
 	iss: {},
 	isIssOverflyingCountry: false,
 	isIssPositionIdentified: false,

@@ -14,7 +14,6 @@ class App extends Component {
 			<div className={ isIssOverflyingCountry ? "app has-country" : "app"}>
 				<MainMap />
 				<Sidebar />
-				<RoutePlayer />
 			</div>
 		)
 	}
@@ -71,6 +70,7 @@ class App extends Component {
 	}
 	onFetchGeoJsonDone(data) {
 		const { actions } = this.props
+		debugger;
 		if (data) actions.setGeoJson(data)
 	}
 	trackIss() {
