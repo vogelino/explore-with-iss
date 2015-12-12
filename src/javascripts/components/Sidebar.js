@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../actions/actions'
-import { formatNumber, formatLanguage } from '../utils/formatUtil'
+import { formatNumber, formatLanguage, formatTimezone } from '../utils/formatUtil'
 
 class Sidebar extends Component {
 	render() {
@@ -67,11 +67,11 @@ class Sidebar extends Component {
 						<label>{country.timezones.length === 1 ?
 							'Timezone' : 'Timezones'}</label>
 						<div className="value">
+							<span className="example-text">UTC </span>
 							{country.timezones.map((timezone, index) => (
 								<span key={index}>
 									{index === 0 ? '' : ', '}
-									<span className="example-text">UTC </span>
-									{timezone.replace('UTC', '')}
+									{formatTimezone(timezone)}
 								</span>
 							))}
 						</div>

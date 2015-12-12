@@ -200,6 +200,12 @@ const languages = {
 	zh: 'Chinese',
 	zu: 'Zulu'
 }
+const escapeRegExp = (str) => {
+	return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+const replaceAll = (str, find, replace) => {
+	return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
 
 formatter.formatNumber = (number) => {
 	var number = number.toFixed(2) + '';
@@ -211,6 +217,13 @@ formatter.formatNumber = (number) => {
 		x1 = x1.replace(rgx, '$1' + ',' + '$2');
 	}
 	return x1 + x2;
+}
+
+
+formatter.formatTimezone = (timezone) => {
+	return replaceAll(timezone, '0', '')
+		.replace('UTC', '')
+		.replace(':', '')
 }
 
 

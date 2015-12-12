@@ -15,6 +15,7 @@ body,
 	height 100%
 	top 0
 	left 0
+	overflow hidden
 
 .main-map
 	z-index 1
@@ -24,16 +25,15 @@ body,
 	position absolute
 	top 0
 	right 0
-	transition padding 200ms ease
-	padding-left 0
-	padding-bottom 0
+	transition transform 200ms ease
+	border-left 0
+	border-bottom 0
 
 	*
 		cursor default !important
 
 	.has-country &
-		padding-left $sidebarWidth
-		padding-bottom $routePlayerHeight - 20
+		transform translateX($sidebarWidth / 2) translateY((($routePlayerHeight - 20) * -1) / 2)
 
 	.leaflet-container
 		width 100%
