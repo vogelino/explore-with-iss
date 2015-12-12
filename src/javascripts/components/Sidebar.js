@@ -2,14 +2,18 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../actions/actions'
-import { formatNumber, formatLanguage, formatTimezone } from '../utils/formatUtil'
+import InformationList from './InformationList'
+import NewsList from './NewsList'
 
 class Sidebar extends Component {
 	render() {
-		const { country, isIssOverflyingCountry } = this.props
+		const { country, isIssOverflyingCountry, isTracking } = this.props
+		const contentHasToBeRendered = isIssOverflyingCountry ||
+			!isTracking && Object.keys(country).length > 0
 		return (
 			<div className="main-sidebar">
-				{isIssOverflyingCountry ? this.getCountryInfo.bind(this)(country) : ''}
+				{contentHasToBeRendered ?
+					this.getCountryInfo.bind(this)(country) : ''}
 			</div>
 		)
 	}
@@ -27,80 +31,11 @@ class Sidebar extends Component {
 						<span className="native-name">({country.nativeName})</span> : ''}
 				</h1>
 				<h2 className="country-informations-title">Counrty informations</h2>
-				<ul className="country-information-list">
-					<li className="country-information-list-element country-capital">
-						<label>Capital</label>
-						<div className="value">{country.capital}</div>
-					</li>
-					<li className="country-information-list-element country-population">
-						<label>Population</label>
-						<div className="value">{formatNumber(country.population)}</div>
-					</li>
-					<li className="country-information-list-element country-area">
-						<label>Area</label>
-						<div className="value">{formatNumber(country.area)} Km<sup>2</sup></div>
-					</li>
-					<li className="country-information-list-element country-language">
-						<label>{country.languages.length === 1 ?
-							'Official language' : 'Official languages'}</label>
-						<div className="value">
-							{country.languages.map((language, index) => (
-								<span key={index}>
-									{index === 0 ? '' : ', '}
-									{formatLanguage(language)}
-								</span>
-							))}
-						</div>
-					</li>
-					<li className="country-information-list-element country-gini">
-						<label>Gini index</label>
-						<div className="value">{country.gini}</div>
-					</li>
-					<li className="country-information-list-element country-currencies">
-						<label>{country.currencies.length === 1 ?
-							'Currency' : 'Currencies'}</label>
-						<div className="value">
-							{country.currencies.join(', ')}
-						</div>
-					</li>
-					<li className="country-information-list-element country-timezones">
-						<label>{country.timezones.length === 1 ?
-							'Timezone' : 'Timezones'}</label>
-						<div className="value">
-							<span className="example-text">UTC </span>
-							{country.timezones.map((timezone, index) => (
-								<span key={index}>
-									{index === 0 ? '' : ', '}
-									{formatTimezone(timezone)}
-								</span>
-							))}
-						</div>
-					</li>
-					<li className="country-information-list-element country-calling-code">
-						<label>{country.callingCodes.length === 1 ?
-							'Calling prefix' : 'Calling prefixes'}</label>
-						<div className="value">
-							{country.callingCodes.map((prefix, index) => (
-								<span key={index}>
-									{index === 0 ? '' : (<br />)}
-									{`+ ${prefix} `} <span className="example-text">123 4567 8910</span>
-								</span>
-							))}
-						</div>
-					</li>
-					<li className="country-information-list-element country-top-level-domain">
-						<label>{country.topLevelDomain.length === 1 ?
-							'Top level domain' : 'Top level domains'}</label>
-						<div className="value">
-							{country.topLevelDomain.map((topLvlDomain, index) => (
-								<span key={index}>
-									{index === 0 ? '' : (<br />)}
-									<span className="example-text">www.example</span>{topLvlDomain}
-								</span>
-							))}
-						</div>
-					</li>
-				</ul>
+				<InformationList country={country} />
+
+				<h2 className="news-list-title">News for "{country.name}"</h2>
+				{!!country.news && country.news.length > 0 ?
+					<NewsList news={country.news} /> : '' }
 			</div>
 		)
 	}

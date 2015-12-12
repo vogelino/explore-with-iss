@@ -17,6 +17,18 @@ body,
 	left 0
 	overflow hidden
 
+a
+	text-decoration none
+	color $linkColor
+	transition color $quick $smoothEase
+
+	&:hover
+		color $linkHoverColor
+
+	&.active,
+	&:active
+		color $linkActiveColor
+
 .main-map
 	z-index 1
 	width 100%
@@ -44,9 +56,9 @@ body,
 	path.country-borders,
 	path.iss-marker
 		stroke-width 1px
-		stroke turquoise
+		stroke $linkColor
 		stroke-opacity .9
-		fill turquoise
+		fill $linkColor
 
 
 .main-sidebar
@@ -59,19 +71,20 @@ body,
 	position absolute
 	top 0
 	left $sidebarWidth * -1 + 20px
-	background #222222
-	color #ebebeb
+	background $sideBarBackgroundColor
+	color $sideBarTextColor
 	transition left 200ms ease
 
 	.has-country &
 		left 0
 
 	.country-name,
-	.country-informations-title
+	.country-informations-title,
+	.news-list-title
 		text-transform uppercase
 
 	.country-name
-		margin-bottom 30px
+		margin-bottom 10px
 		font-size 22px
 		height 26px
 
@@ -98,7 +111,10 @@ body,
 			padding 9px 0 5px
 			letter-spacing .05em
 
-	.country-informations-title
+	.country-informations-title,
+	.news-list-title
+		width 100%
+		float left
 		font-weight 300
 		font-size 14px
 
@@ -120,7 +136,52 @@ body,
 			float left
 
 	.country-information-list-element .example-text
-		color #555
+		color $discreteColor
+
+	.news-list
+		width 100%
+		float left
+		position relative
+
+		ul,
+		li
+			width 100%
+			float left
+			margin 0
+			padding 0
+			list-style-type none
+
+		ul
+			height $newsHeight
+			overflow scroll
+
+		.title
+			margin 0
+
+		.author,
+		.domain
+			font-weight 300
+			font-size 12px
+			color $discreteColor
+
+		.author
+			margin-left 7px
+			text-transform uppercase
+
+		.kwic
+			margin 2px 0 0
+
+		li
+			margin-bottom 20px
+
+		.gradient-overlay
+			position absolute
+			left 0
+			bottom 0
+			pointer-events none
+			width 100%
+			height $newsHeight
+			box-shadow inset 0 -20px 20px -10px $sideBarBackgroundColor
 
 .route-player
 	z-index 2
