@@ -4,23 +4,28 @@ import { connect } from 'react-redux'
 import * as Actions from '../actions/actions'
 import L from 'leaflet'
 import { Map, CircleMarker, Popup, TileLayer, GeoJson } from 'react-leaflet'
-const geoJson = require('/data/counrtyShapes.json')
 
 class MainMap extends Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			geoJson: false
+		}
+	}
 	render() {
-		const { iss, isTracking, country,
+		const { iss, isTracking, country, geoJson,
 			isIssPositionIdentified, isIssOverflyingCountry } = this.props
 		const issPosition = isIssPositionIdentified ?
 			[iss.latitude, iss.longitude] : [0, 0]
 
-		const doesCountryHaveGeoData = !!country.geoJson
 		const mapCenter = isTracking ? issPosition :
 			( isIssOverflyingCountry ? country.latlng : issPosition)
 		return (
 			<div className="main-map">
 				<Map
 					center={mapCenter}
-					zoom={5}
+					zoom={4}
 					dragging={false}
 					scrollWheelZoom={false}
 					zoomControl={false} >
@@ -35,11 +40,30 @@ class MainMap extends Component {
 							center={issPosition}
 							radius={5}>
 						</CircleMarker> : ''}
-					{ isIssOverflyingCountry && doesCountryHaveGeoData ?
-						<GeoJson data={geoJson} className="country-borders"/> : '' }
 				</Map>
 			</div>
 		)
+	}
+	getGeoJsonLayer() {
+		const { geoJson } = this.props
+		if (Object.keys(geoJson).length === 0) return
+		return (
+			<GeoJson
+				data={geoJson}
+				className={this.getFeatureClass.bind(this)} />
+		)
+	}
+	getFeatureClass(feature, layer) {
+			debugger;
+		const { country, isIssOverflyingCountry } = this.props
+		if (!isIssOverflyingCountry || !country.name) return
+		const isActive = feature.properties.ISO2.toUpperCase() === country.alphaCode2
+		if (country) {
+		}
+		return [
+			"country-borders",
+			isActive ? 'active' : 'inactive'
+		].join(' ')
 	}
 }
 
@@ -48,7 +72,8 @@ MainMap.propTypes = {
 	isTracking: PropTypes.bool.isRequired,
 	isIssOverflyingCountry: PropTypes.bool.isRequired,
 	iss: PropTypes.object.isRequired,
-	isIssPositionIdentified: PropTypes.bool.isRequired
+	isIssPositionIdentified: PropTypes.bool.isRequired,
+	geoJson: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -57,7 +82,8 @@ const mapStateToProps = (state) => {
 		isTracking: state.dataVis.isTracking,
 		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
 		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
-		iss: state.dataVis.iss
+		iss: state.dataVis.iss,
+		geoJson: state.dataVis.geoJson
 	}
 }
 

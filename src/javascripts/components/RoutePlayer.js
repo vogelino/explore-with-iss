@@ -19,14 +19,20 @@ class RoutePlayer extends Component {
 RoutePlayer.propTypes = {
 	country: PropTypes.object.isRequired,
 	isTracking: PropTypes.bool.isRequired,
-	iss: PropTypes.object.isRequired
+	isIssOverflyingCountry: PropTypes.bool.isRequired,
+	iss: PropTypes.object.isRequired,
+	isIssPositionIdentified: PropTypes.bool.isRequired,
+	geoJson: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => {
 	return {
 		country: state.dataVis.country,
 		isTracking: state.dataVis.isTracking,
-		iss: state.dataVis.iss
+		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
+		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
+		iss: state.dataVis.iss,
+		geoJson: state.dataVis.geoJson
 	}
 }
 

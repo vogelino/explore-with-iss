@@ -21,6 +21,7 @@ class App extends Component {
 	componentDidMount() {
 		this.updateIssPosition(this.onFetchPositionDone.bind(this))
 		this.updateIssCountry(this.onFetchCountryDone.bind(this))
+		this.loadGeoJSON(this.onFetchGeoJsonDone.bind(this))
 		this.startTracking()
 	}
 	updateIssPosition(cb) {
@@ -32,6 +33,13 @@ class App extends Component {
 	}
 	updateIssCountry(cb) {
 		return fetch('http://localhost:8080/api/iss-country')
+			.then((response) => {
+				response.json()
+					.then(cb)
+			})
+	}
+	loadGeoJSON(cb) {
+		return fetch('http://localhost:8080/api/geo-json')
 			.then((response) => {
 				response.json()
 					.then(cb)
@@ -61,6 +69,10 @@ class App extends Component {
 		}
 		return data
 	}
+	onFetchGeoJsonDone(data) {
+		const { actions } = this.props
+		if (data) actions.setGeoJson(data)
+	}
 	trackIss() {
 		this.updateIssPosition(this.checkAndUpdate.bind(this))
 	}
@@ -87,7 +99,8 @@ App.propTypes = {
 	isTracking: PropTypes.bool.isRequired,
 	isIssOverflyingCountry: PropTypes.bool.isRequired,
 	iss: PropTypes.object.isRequired,
-	isIssPositionIdentified: PropTypes.bool.isRequired
+	isIssPositionIdentified: PropTypes.bool.isRequired,
+	geoJson: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -96,7 +109,8 @@ const mapStateToProps = (state) => {
 		isTracking: state.dataVis.isTracking,
 		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
 		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
-		iss: state.dataVis.iss
+		iss: state.dataVis.iss,
+		geoJson: state.dataVis.geoJson
 	}
 }
 
