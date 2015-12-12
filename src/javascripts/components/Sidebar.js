@@ -69,7 +69,7 @@ class Sidebar extends Component {
 						<div className="value">
 							{country.timezones.map((timezone, index) => (
 								<span key={index}>
-									{index === 0 ? '' : (<br />)}
+									{index === 0 ? '' : ', '}
 									<span className="example-text">UTC </span>
 									{timezone.replace('UTC', '')}
 								</span>
