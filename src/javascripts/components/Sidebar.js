@@ -58,8 +58,10 @@ class Sidebar extends Component {
 				<h2 className="country-informations-title">Counrty informations</h2>
 				<InformationList country={country} />
 
-				<h2 className="country-pictures-title">Iss pictures</h2>
-				<PicturesGallery pictures={country.issPictures} />
+				<PicturesGallery
+					countryName={country.name}
+					countryColor={countryColor}
+					pictures={country.issPictures} />
 
 				<h2 className="news-list-title">News for "{country.name}"</h2>
 				{!!country.news && country.news.length > 0 ?
