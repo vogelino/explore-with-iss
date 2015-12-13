@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import * as Actions from '../actions/actions'
 import InformationList from './InformationList'
 import NewsList from './NewsList'
+import PicturesGallery from './PicturesGallery'
 import Vibrant from 'node-vibrant'
 
 class Sidebar extends Component {
@@ -53,8 +54,12 @@ class Sidebar extends Component {
 					{country.name.toUpperCase() !== country.nativeName.toUpperCase() ?
 						<span className="native-name">({country.nativeName})</span> : false}
 				</h1>
+
 				<h2 className="country-informations-title">Counrty informations</h2>
 				<InformationList country={country} />
+
+				<h2 className="country-pictures-title">Iss pictures</h2>
+				<PicturesGallery pictures={country.issPictures} />
 
 				<h2 className="news-list-title">News for "{country.name}"</h2>
 				{!!country.news && country.news.length > 0 ?

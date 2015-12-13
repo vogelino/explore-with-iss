@@ -70,7 +70,7 @@ a
 	width $sidebarWidth
 	height 100%
 	box-sizing border-box
-	padding 20px
+	padding $sidebarPadding
 	position absolute
 	top 0
 	left $sidebarWidth * -1
@@ -84,7 +84,8 @@ a
 
 	.country-name,
 	.country-informations-title,
-	.news-list-title
+	.news-list-title,
+	.country-pictures-title
 		text-transform uppercase
 
 	.country-name
@@ -116,7 +117,8 @@ a
 			letter-spacing .05em
 
 	.country-informations-title,
-	.news-list-title
+	.news-list-title,
+	.country-pictures-title
 		width 100%
 		float left
 		font-weight 300
@@ -141,6 +143,26 @@ a
 
 	.country-information-list-element .example-text
 		color $discreteColor
+
+	$pictureSize = floor((($sidebarWidth - (2 * $sidebarPadding)) - 15) / 4)
+	.country-pictures
+		width 100%
+		height $pictureSize
+		margin-bottom 10px
+		overflow hidden
+		float left
+
+		.pictures-wrapper
+			width auto
+			white-space nowrap
+
+		.picture
+			width $pictureSize
+			height $pictureSize
+			display inline-block
+			margin 0 5px 5px 0
+			background-size cover
+			border-radius 3px
 
 	.news-list
 		width 100%
