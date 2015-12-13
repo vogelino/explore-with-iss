@@ -42,6 +42,7 @@ a
 	right 0
 	transition transform 200ms ease
 	padding 0
+	background $sideBarBackgroundColor
 
 	*
 		cursor default !important
@@ -62,9 +63,18 @@ a
 		fill-opacity .1
 
 	path.iss-marker
-		fill $sideBarBackgroundColor
-		stroke $sideBarBackgroundColor
+		fill $sideBarTextColor
+		stroke $sideBarTextColor
+		transform-origin 50% 50%
+		z-index 100
 
+		animation marker .5s $smoothEase infinite alternate
+
+		@keyframes marker
+			0%
+				transform scale(1.0)
+			100%
+				transform scale(1.1)
 
 .main-sidebar
 	z-index 3

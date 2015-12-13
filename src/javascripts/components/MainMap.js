@@ -43,7 +43,7 @@ class MainMap extends Component {
 					scrollWheelZoom={false}
 					zoomControl={false} >
 					<TileLayer
-						url='http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
+						url='http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
 						subdomains="abcd"
 						maxZoom={19}
 						attribution={false}
