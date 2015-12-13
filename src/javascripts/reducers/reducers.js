@@ -5,7 +5,8 @@ const initialState = {
 	isTracking: true,
 	iss: {},
 	isIssOverflyingCountry: false,
-	isIssPositionIdentified: false
+	isIssPositionIdentified: false,
+	countryColor: '#000'
 }
 
 export default function dataVis(state = initialState, action) {
@@ -26,6 +27,9 @@ export default function dataVis(state = initialState, action) {
 
 		case actionTypes.TOGGLE_TRACKING:
 			return Object.assign({}, state, { isTracking: !state.isTracking })
+
+		case actionTypes.SET_COUNTRY_COLOR:
+			return Object.assign({}, state, { countryColor: action.color })
 
 		default:
 			return state

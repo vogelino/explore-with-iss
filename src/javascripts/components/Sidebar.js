@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import * as Actions from '../actions/actions'
 import InformationList from './InformationList'
 import NewsList from './NewsList'
+import Vibrant from 'node-vibrant'
 
 class Sidebar extends Component {
 	render() {
@@ -13,11 +14,32 @@ class Sidebar extends Component {
 		return (
 			<div className="main-sidebar">
 				{contentHasToBeRendered ?
-					this.getCountryInfo.bind(this)(country) : ''}
+					this.getCountryInfo.bind(this)() : false}
 			</div>
 		)
 	}
-	getCountryInfo(country) {
+	onFlagLoaded(e) {
+		const { countryColor } = this.props
+		const { setCountryColor } = this.props.actions
+		const vibrant = new Vibrant(e.target.getAttribute('src'))
+		vibrant.getSwatches((err, swatchObj) => {
+			if (err) {
+				console.log('Error loading swatches. Retrieving default color.')
+				return
+			}
+			var swatches = [];
+			for (var name in swatchObj) {
+				if (swatchObj.hasOwnProperty(name) && swatchObj[name]) {
+					const color = swatchObj[name].getHex()
+					if (name === 'LightVibrant' && countryColor !== color) {
+						setCountryColor(color)
+					}
+				}
+			}
+		})
+	}
+	getCountryInfo() {
+		const { country, countryColor } = this.props
 		const countryCode = country.alpha2Code.toLowerCase()
 		return (
 			<div>
@@ -25,17 +47,20 @@ class Sidebar extends Component {
 					<img
 						className="flag"
 						alt={`${countryCode}-flag`}
-						src={`http://flags.fmcdn.net/data/flags/normal/${countryCode}.png`} />
+						src={`http://flags.fmcdn.net/data/flags/normal/${countryCode}.png`}
+						onLoad={this.onFlagLoaded.bind(this)}/>
 					<div className="main-name">{country.name}</div>
 					{country.name.toUpperCase() !== country.nativeName.toUpperCase() ?
-						<span className="native-name">({country.nativeName})</span> : ''}
+						<span className="native-name">({country.nativeName})</span> : false}
 				</h1>
 				<h2 className="country-informations-title">Counrty informations</h2>
 				<InformationList country={country} />
 
 				<h2 className="news-list-title">News for "{country.name}"</h2>
 				{!!country.news && country.news.length > 0 ?
-					<NewsList news={country.news} /> : '' }
+					<NewsList
+						countryColor={countryColor}
+						news={country.news} /> : false }
 			</div>
 		)
 	}
@@ -46,7 +71,8 @@ Sidebar.propTypes = {
 	isTracking: PropTypes.bool.isRequired,
 	isIssOverflyingCountry: PropTypes.bool.isRequired,
 	iss: PropTypes.object.isRequired,
-	isIssPositionIdentified: PropTypes.bool.isRequired
+	isIssPositionIdentified: PropTypes.bool.isRequired,
+	countryColor: PropTypes.string.isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -55,7 +81,8 @@ const mapStateToProps = (state) => {
 		isTracking: state.dataVis.isTracking,
 		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
 		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
-		iss: state.dataVis.iss
+		iss: state.dataVis.iss,
+		countryColor: state.dataVis.countryColor
 	}
 }
 

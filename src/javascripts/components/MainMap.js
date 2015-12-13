@@ -9,7 +9,8 @@ import { Map, CircleMarker, Popup, TileLayer, GeoJson } from 'react-leaflet'
 let geoJsonLayerKey = 0
 class MainMap extends Component {
 	componentWillReceiveProps(prevProps) {
-		if (prevProps.country !== this.props.country) {
+		if (!prevProps.country.name || !this.props.country.name) return
+		if (prevProps.country.name !== this.props.country.name) {
 			geoJsonLayerKey++
         }
 	}
@@ -18,14 +19,23 @@ class MainMap extends Component {
 			.domain([1000, 17075200])
 			.range([6, 4])
 		const { iss, isTracking, country, geoJson,
-			isIssPositionIdentified, isIssOverflyingCountry } = this.props
+			isIssPositionIdentified, isIssOverflyingCountry, countryColor } = this.props
 		const issPosition = isIssPositionIdentified ?
 			[iss.latitude, iss.longitude] : [0, 0]
 
 		const mapCenter = isTracking ? issPosition :
 			( isIssOverflyingCountry ? country.latlng : issPosition)
+
+		const pathStyles = `
+			path.iss-marker,
+			path.country-borders {
+				fill: ${countryColor};
+				stroke: ${countryColor};
+			}
+		`
 		return (
 			<div className="main-map">
+				<style>{pathStyles}</style>
 				<Map
 					center={country && country.latlng ? country.latlng : mapCenter}
 					// center={mapCenter}
@@ -68,7 +78,8 @@ MainMap.propTypes = {
 	isTracking: PropTypes.bool.isRequired,
 	isIssOverflyingCountry: PropTypes.bool.isRequired,
 	iss: PropTypes.object.isRequired,
-	isIssPositionIdentified: PropTypes.bool.isRequired
+	isIssPositionIdentified: PropTypes.bool.isRequired,
+	countryColor: PropTypes.string.isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -77,7 +88,8 @@ const mapStateToProps = (state) => {
 		isTracking: state.dataVis.isTracking,
 		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
 		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
-		iss: state.dataVis.iss
+		iss: state.dataVis.iss,
+		countryColor: state.dataVis.countryColor
 	}
 }
 

@@ -26,7 +26,6 @@ class App extends Component {
 			.then((response) => {
 				response.json()
 					.then(cb)
-					.catch(this.onFetchPositionFail.bind(this))
 			})
 			.catch(this.onFetchPositionFail.bind(this))
 	}
@@ -35,7 +34,6 @@ class App extends Component {
 			.then((response) => {
 				response.json()
 					.then(cb)
-					.catch(this.onFetchCountryFail.bind(this))
 			})
 			.catch(this.onFetchCountryFail.bind(this))
 	}
@@ -58,8 +56,7 @@ class App extends Component {
 	onFetchCountryDone(data) {
 		const { actions } = this.props
 		if (data.status) {
-			actions.defineIfIssIsOverflyingCountry(false)
-			actions.setCountryInfos({})
+			this.onFetchCountryFail.bind(this)()
 		}
 		else {
 			actions.setCountryInfos(data)
@@ -69,6 +66,7 @@ class App extends Component {
 	}
 	onFetchCountryFail() {
 		const { actions } = this.props
+		actions.setCountryColor('#000')
 		actions.defineIfIssIsOverflyingCountry(false)
 		actions.setCountryInfos({})
 	}
@@ -76,7 +74,7 @@ class App extends Component {
 		this.updateIssPosition(this.checkAndUpdate.bind(this))
 	}
 	checkAndUpdate(data) {
-		if (data.status) return ''
+		if (data.status) return
 		this.onFetchPositionDone.bind(this)(data)
 		if (this.props.country.alpha2Code !== this.props.iss.countryCode)
 			this.updateIssCountry(this.onFetchCountryDone.bind(this))
@@ -98,7 +96,8 @@ App.propTypes = {
 	isTracking: PropTypes.bool.isRequired,
 	isIssOverflyingCountry: PropTypes.bool.isRequired,
 	iss: PropTypes.object.isRequired,
-	isIssPositionIdentified: PropTypes.bool.isRequired
+	isIssPositionIdentified: PropTypes.bool.isRequired,
+	countryColor: PropTypes.string.isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -107,7 +106,8 @@ const mapStateToProps = (state) => {
 		isTracking: state.dataVis.isTracking,
 		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
 		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
-		iss: state.dataVis.iss
+		iss: state.dataVis.iss,
+		countryColor: state.dataVis.countryColor
 	}
 }
 
