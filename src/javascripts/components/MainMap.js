@@ -8,11 +8,15 @@ import { Map, CircleMarker, Popup, TileLayer, GeoJson } from 'react-leaflet'
 
 let geoJsonLayerKey = 0
 class MainMap extends Component {
+	componentWillReceiveProps(prevProps) {
+		if (prevProps.country !== this.props.country) {
+			geoJsonLayerKey++
+        }
+	}
 	render() {
-		geoJsonLayerKey++
 		const zoomScale = d3.scale.linear()
-			.domain([0, 17075200])
-			.range([7, 2])
+			.domain([1000, 17075200])
+			.range([6, 4])
 		const { iss, isTracking, country, geoJson,
 			isIssPositionIdentified, isIssOverflyingCountry } = this.props
 		const issPosition = isIssPositionIdentified ?
@@ -30,8 +34,9 @@ class MainMap extends Component {
 					scrollWheelZoom={false}
 					zoomControl={false} >
 					<TileLayer
-						url='http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
+						url='http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
 						subdomains="abcd"
+						maxZoom={19}
 						attribution={false}
 					/>
 					{isIssPositionIdentified ?
