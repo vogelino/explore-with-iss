@@ -29,7 +29,8 @@ a
 	&:active
 		color $linkActiveColor
 
-.main-map
+.main-map,
+.main-map > div
 	z-index 1
 	width 100%
 	height 100%
@@ -39,11 +40,12 @@ a
 	right 0
 	transition transform 200ms ease
 	padding 0
+
 	*
 		cursor default !important
 
 	.has-country &
-		transform translateX($sidebarWidth / 2)
+		transform translateX(($sidebarWidth / 4))
 
 	.leaflet-container
 		width 100%
@@ -57,6 +59,7 @@ a
 		stroke $linkColor
 		stroke-opacity .9
 		fill $linkColor
+		fill-opacity .1
 
 
 .main-sidebar
@@ -68,10 +71,11 @@ a
 	padding 20px
 	position absolute
 	top 0
-	left $sidebarWidth * -1 + 20px
+	left $sidebarWidth * -1
 	background $sideBarBackgroundColor
 	color $sideBarTextColor
 	transition left 200ms ease
+	border-right 1px solid rgba(0,0,0,.1)
 
 	.has-country &
 		left 0

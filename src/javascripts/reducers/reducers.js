@@ -5,8 +5,7 @@ const initialState = {
 	isTracking: true,
 	iss: {},
 	isIssOverflyingCountry: false,
-	isIssPositionIdentified: false,
-	geoJson: {}
+	isIssPositionIdentified: false
 }
 
 export default function dataVis(state = initialState, action) {
@@ -27,9 +26,6 @@ export default function dataVis(state = initialState, action) {
 
 		case actionTypes.TOGGLE_TRACKING:
 			return Object.assign({}, state, { isTracking: !state.isTracking })
-
-		case actionTypes.SET_GEO_JSON:
-			return Object.assign({}, state, { geoJson: action.geoJson })
 
 		default:
 			return state

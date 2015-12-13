@@ -2,18 +2,17 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../actions/actions'
+import d3 from 'd3'
 import L from 'leaflet'
 import { Map, CircleMarker, Popup, TileLayer, GeoJson } from 'react-leaflet'
 
+let geoJsonLayerKey = 0
 class MainMap extends Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			geoJson: false
-		}
-	}
 	render() {
+		geoJsonLayerKey++
+		const zoomScale = d3.scale.linear()
+			.domain([0, 17075200])
+			.range([7, 2])
 		const { iss, isTracking, country, geoJson,
 			isIssPositionIdentified, isIssOverflyingCountry } = this.props
 		const issPosition = isIssPositionIdentified ?
@@ -24,8 +23,9 @@ class MainMap extends Component {
 		return (
 			<div className="main-map">
 				<Map
-					center={mapCenter}
-					zoom={4}
+					center={country && country.latlng ? country.latlng : mapCenter}
+					// center={mapCenter}
+					zoom={country && country.latlng ? Math.floor(zoomScale(country.area)) : 4}
 					dragging={false}
 					scrollWheelZoom={false}
 					zoomControl={false} >
@@ -40,30 +40,21 @@ class MainMap extends Component {
 							center={issPosition}
 							radius={5}>
 						</CircleMarker> : ''}
+					{this.getGeoJsonLayer.bind(this)()}
 				</Map>
 			</div>
 		)
 	}
 	getGeoJsonLayer() {
-		const { geoJson } = this.props
-		if (Object.keys(geoJson).length === 0) return
+		const { country } = this.props
+		const { geoJson } = country
+		if (!geoJson || Object.keys(geoJson).length === 0) return false
 		return (
 			<GeoJson
+				key={geoJsonLayerKey}
 				data={geoJson}
-				className={this.getFeatureClass.bind(this)} />
+				className="country-borders" />
 		)
-	}
-	getFeatureClass(feature, layer) {
-			debugger;
-		const { country, isIssOverflyingCountry } = this.props
-		if (!isIssOverflyingCountry || !country.name) return
-		const isActive = feature.properties.ISO2.toUpperCase() === country.alphaCode2
-		if (country) {
-		}
-		return [
-			"country-borders",
-			isActive ? 'active' : 'inactive'
-		].join(' ')
 	}
 }
 
@@ -72,8 +63,7 @@ MainMap.propTypes = {
 	isTracking: PropTypes.bool.isRequired,
 	isIssOverflyingCountry: PropTypes.bool.isRequired,
 	iss: PropTypes.object.isRequired,
-	isIssPositionIdentified: PropTypes.bool.isRequired,
-	geoJson: PropTypes.object.isRequired
+	isIssPositionIdentified: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -82,8 +72,7 @@ const mapStateToProps = (state) => {
 		isTracking: state.dataVis.isTracking,
 		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
 		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
-		iss: state.dataVis.iss,
-		geoJson: state.dataVis.geoJson
+		iss: state.dataVis.iss
 	}
 }
 

@@ -73,7 +73,7 @@ class InformationList extends Component {
 						{country.topLevelDomain.map((topLvlDomain, index) => (
 							<span key={index}>
 								{index === 0 ? '' : (<br />)}
-								<span className="example-text">www.example</span>{topLvlDomain}
+								<span className="example-text">www.{country.capital.toLowerCase()}</span>{topLvlDomain}
 							</span>
 						))}
 					</div>

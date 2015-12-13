@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import * as Actions from '../actions/actions'
 import MainMap from '../components/MainMap'
 import Sidebar from '../components/Sidebar'
-import RoutePlayer from '../components/RoutePlayer'
 
 class App extends Component {
 	render() {
@@ -20,7 +19,6 @@ class App extends Component {
 	componentDidMount() {
 		this.updateIssPosition(this.onFetchPositionDone.bind(this))
 		this.updateIssCountry(this.onFetchCountryDone.bind(this))
-		this.loadGeoJSON(this.onFetchGeoJsonDone.bind(this))
 		this.startTracking()
 	}
 	updateIssPosition(cb) {
@@ -28,33 +26,34 @@ class App extends Component {
 			.then((response) => {
 				response.json()
 					.then(cb)
+					.catch(this.onFetchPositionFail.bind(this))
 			})
+			.catch(this.onFetchPositionFail.bind(this))
 	}
 	updateIssCountry(cb) {
 		return fetch('http://localhost:8080/api/iss-country')
 			.then((response) => {
 				response.json()
 					.then(cb)
+					.catch(this.onFetchCountryFail.bind(this))
 			})
-	}
-	loadGeoJSON(cb) {
-		return fetch('http://localhost:8080/api/geo-json')
-			.then((response) => {
-				response.json()
-					.then(cb)
-			})
+			.catch(this.onFetchCountryFail.bind(this))
 	}
 	onFetchPositionDone(data) {
 		const { actions } = this.props
 		if (data.status) {
-			actions.defineIfIssPositionIdentified(false)
-			actions.setIssPosition({})
+			this.onFetchPositionFail.bind(this)()
 		}
 		else {
 			actions.setIssPosition(data)
 			actions.defineIfIssPositionIdentified(true)
 		}
 		return data
+	}
+	onFetchPositionFail() {
+		const { actions } = this.props
+		actions.defineIfIssPositionIdentified(false)
+		actions.setIssPosition({})
 	}
 	onFetchCountryDone(data) {
 		const { actions } = this.props
@@ -68,16 +67,16 @@ class App extends Component {
 		}
 		return data
 	}
-	onFetchGeoJsonDone(data) {
+	onFetchCountryFail() {
 		const { actions } = this.props
-		debugger;
-		if (data) actions.setGeoJson(data)
+		actions.defineIfIssIsOverflyingCountry(false)
+		actions.setCountryInfos({})
 	}
 	trackIss() {
 		this.updateIssPosition(this.checkAndUpdate.bind(this))
 	}
 	checkAndUpdate(data) {
-		if (data.status) return
+		if (data.status) return ''
 		this.onFetchPositionDone.bind(this)(data)
 		if (this.props.country.alpha2Code !== this.props.iss.countryCode)
 			this.updateIssCountry(this.onFetchCountryDone.bind(this))
@@ -99,8 +98,7 @@ App.propTypes = {
 	isTracking: PropTypes.bool.isRequired,
 	isIssOverflyingCountry: PropTypes.bool.isRequired,
 	iss: PropTypes.object.isRequired,
-	isIssPositionIdentified: PropTypes.bool.isRequired,
-	geoJson: PropTypes.object.isRequired
+	isIssPositionIdentified: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -109,8 +107,7 @@ const mapStateToProps = (state) => {
 		isTracking: state.dataVis.isTracking,
 		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
 		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
-		iss: state.dataVis.iss,
-		geoJson: state.dataVis.geoJson
+		iss: state.dataVis.iss
 	}
 }
 

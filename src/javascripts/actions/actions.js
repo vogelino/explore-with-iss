@@ -19,7 +19,3 @@ export function defineIfIssPositionIdentified(isDefined) {
 export function defineIfIssIsOverflyingCountry(isOverflyingCountry) {
 	return { type: types.DEFINE_IF_ISS_IS_OVERFLYING_COUNTRY, isOverflyingCountry }
 }
-
-export function setGeoJson(geoJson) {
-	return { type: types.SET_GEO_JSON, geoJson }
-}
