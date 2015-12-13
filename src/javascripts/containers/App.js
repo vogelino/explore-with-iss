@@ -66,7 +66,7 @@ class App extends Component {
 	}
 	onFetchCountryFail() {
 		const { actions } = this.props
-		actions.setCountryColor('#000')
+		actions.setCountryColor('#fff')
 		actions.defineIfIssIsOverflyingCountry(false)
 		actions.setCountryInfos({})
 	}

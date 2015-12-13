@@ -27,7 +27,6 @@ class MainMap extends Component {
 			( isIssOverflyingCountry ? country.latlng : issPosition)
 
 		const pathStyles = `
-			path.iss-marker,
 			path.country-borders {
 				fill: ${countryColor};
 				stroke: ${countryColor};

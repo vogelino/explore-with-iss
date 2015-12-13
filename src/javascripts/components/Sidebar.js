@@ -31,7 +31,7 @@ class Sidebar extends Component {
 			for (var name in swatchObj) {
 				if (swatchObj.hasOwnProperty(name) && swatchObj[name]) {
 					const color = swatchObj[name].getHex()
-					if (name === 'LightVibrant' && countryColor !== color) {
+					if (name === 'Vibrant' && countryColor !== color) {
 						setCountryColor(color)
 					}
 				}
@@ -47,7 +47,7 @@ class Sidebar extends Component {
 					<img
 						className="flag"
 						alt={`${countryCode}-flag`}
-						src={`http://flags.fmcdn.net/data/flags/normal/${countryCode}.png`}
+						src={`/images/flags/${countryCode}_64.png`}
 						onLoad={this.onFlagLoaded.bind(this)}/>
 					<div className="main-name">{country.name}</div>
 					{country.name.toUpperCase() !== country.nativeName.toUpperCase() ?

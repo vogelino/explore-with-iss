@@ -6,7 +6,7 @@ const initialState = {
 	iss: {},
 	isIssOverflyingCountry: false,
 	isIssPositionIdentified: false,
-	countryColor: '#000'
+	countryColor: '#fff'
 }
 
 export default function dataVis(state = initialState, action) {
