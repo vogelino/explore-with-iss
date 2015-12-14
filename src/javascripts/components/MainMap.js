@@ -66,24 +66,26 @@ class MainMap extends Component {
 						</CircleMarker> : false}
 					{isIssOverflyingCountry && country.issPictures ?
 						country.issPictures.map((pic) => {
-							return (
-								<CircleMarker
-									key={pic.id}
-									className="picture-position"
-									center={[pic.lat, pic.lon]}
-									radius={3}>
-									<Popup>
-										<a
-											href={pic.url}
-											target="_blank"
-											title={pic.id} >
-											<img
-												src={pic.thumb}
-												alt={pic.id} />
-										</a>
-									</Popup>
-								</CircleMarker>
-							)
+							if (!!pic.lat || !!pic.lng) {
+								return (
+									<CircleMarker
+										key={pic.id}
+										className="picture-position"
+										center={[pic.lat, pic.lng]}
+										radius={3}>
+										<Popup>
+											<a
+												href={pic.url}
+												target="_blank"
+												title={pic.id} >
+												<img
+													src={pic.thumb}
+													alt={pic.id} />
+											</a>
+										</Popup>
+									</CircleMarker>
+								)
+							}
 						}) : false}
 					{this.getGeoJsonLayer.bind(this)()}
 				</Map>
