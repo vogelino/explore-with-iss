@@ -63,6 +63,9 @@ a
 		stroke-opacity .9
 		fill-opacity .1
 
+	path.country-borders
+		pointer-events none
+
 	path.picture-position
 		cursor pointer !important
 		transition fill $quick $smoothEase, stroke $quick $smoothEase
@@ -222,6 +225,16 @@ a
 				&.disabled
 					color $discreteColor
 					cursor default
+
+		.no-pictures-placeholder
+			width 100%
+			box-sizing border-box
+			border-radius 3px
+			float left
+			padding 5px 10px
+			background lighten($sideBarBackgroundColor, 10%)
+			margin-bottom 20px
+
 
 	.news-list
 		width 100%

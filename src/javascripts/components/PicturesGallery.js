@@ -23,27 +23,33 @@ class PicturesGallery extends Component {
 					Iss pictures of {countryName}
 					{this.displayControls.bind(this)()}
 				</h2>
-				<div className="country-pictures">
-					<div
-						style={{
-							transform: `translateX(${(firstPictureIndex * 91 * -1)}px)`
-						}}
-						className="pictures-wrapper">
-						{pictures.map((pic) => {
-							const album = pic.id.split('-')[0]
-							return (
-								<a
-									href={pic.url}
-									target="_blank"
-									className="picture"
-									key={pic.id}
-									style={{
-										backgroundImage: `url(${pic.thumb})`
-									}} />
-							)
-						}
-						)}
-					</div>
+				{pictures.length >= 1 ? this.getPicturesGallery(firstPictureIndex, pictures) :
+					<div className="no-pictures-placeholder">No pictures for this country</div>}
+			</div>
+		)
+	}
+	getPicturesGallery(firstPictureIndex, pictures) {
+		return (
+			<div className="country-pictures">
+				<div
+					style={{
+						transform: `translateX(${(firstPictureIndex * 91 * -1)}px)`
+					}}
+					className="pictures-wrapper">
+					{pictures.map((pic) => {
+						const album = pic.id.split('-')[0]
+						return (
+							<a
+								href={pic.url}
+								target="_blank"
+								className="picture"
+								key={pic.id}
+								style={{
+									backgroundImage: `url(${pic.thumb})`
+								}} />
+						)
+					}
+					)}
 				</div>
 			</div>
 		)
