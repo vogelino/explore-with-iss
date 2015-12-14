@@ -9,13 +9,18 @@ class PicturesGallery extends Component {
 			picturesByPage: 4
 		}
 	}
+	componentWillReceiveProps(prevProps) {
+		if (prevProps.pictures !== this.props.pictures) {
+			this.setState({ firstPictureIndex: 0 })
+		}
+	}
 	render() {
 		const { pictures, countryName } = this.props
 		const { firstPictureIndex } = this.state
 		return (
 			<div className="pictures-gallery">
 				<h2 className="country-pictures-title">
-					Iss pictures from {countryName}
+					Iss pictures of {countryName}
 					{this.displayControls.bind(this)()}
 				</h2>
 				<div className="country-pictures">
@@ -24,14 +29,20 @@ class PicturesGallery extends Component {
 							transform: `translateX(${(firstPictureIndex * 91 * -1)}px)`
 						}}
 						className="pictures-wrapper">
-						{pictures.map((pic, index) => (
-							<div
-								className="picture"
-								key={index}
-								style={{
-									backgroundImage: `url('http://eol.jsc.nasa.gov/DatabaseImages/ESC/small/STS126/${pic}.JPG')`
-								}} />
-						))}
+						{pictures.map((pic) => {
+							const album = pic.id.split('-')[0]
+							return (
+								<a
+									href={pic.url}
+									target="_blank"
+									className="picture"
+									key={pic.id}
+									style={{
+										backgroundImage: `url(${pic.thumb})`
+									}} />
+							)
+						}
+						)}
 					</div>
 				</div>
 			</div>

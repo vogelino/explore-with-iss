@@ -57,10 +57,38 @@ a
 		float left
 
 	path.country-borders,
-	path.iss-marker
+	path.iss-marker,
+	path.picture-position
 		stroke-width 1px
 		stroke-opacity .9
 		fill-opacity .1
+
+	path.picture-position
+		cursor pointer !important
+		transition fill $quick $smoothEase, stroke $quick $smoothEase
+
+		&:hover
+			fill #fff !important
+			stroke #fff !important
+
+	.leaflet-popup-content-wrapper
+		border-radius 3px
+
+	.leaflet-popup-content
+		margin 3px 3px 0
+
+	.leaflet-container a.leaflet-popup-close-button:hover {
+		color #fff
+		cursor pointer !important
+	}
+
+	.leaflet-popup-tip
+		width 10px
+		height 10px
+
+
+	.leaflet-popup-content-wrapper
+		background $sideBarBackgroundColor
 
 	path.iss-marker
 		fill $sideBarTextColor
