@@ -40,7 +40,7 @@ class Sidebar extends Component {
 		})
 	}
 	getCountryInfo() {
-		const { country, countryColor } = this.props
+		const { actions, country, countryColor } = this.props
 		const countryCode = country.alpha2Code.toLowerCase()
 		return (
 			<div>
@@ -58,10 +58,7 @@ class Sidebar extends Component {
 				<h2 className="country-informations-title">Counrty informations</h2>
 				<InformationList country={country} />
 
-				<PicturesGallery
-					countryName={country.name}
-					countryColor={countryColor}
-					pictures={country.issPictures} />
+				<PicturesGallery />
 
 				<h2 className="news-list-title">News for "{country.name}"</h2>
 				{!!country.news && country.news.length > 0 ?

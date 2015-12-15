@@ -41,6 +41,9 @@ class MainMap extends Component {
 				fill: ${countryColor};
 				stroke: ${countryColor};
 			}
+			.picture.active {
+				box-shadow: inset 0 0 0 2px ${countryColor};
+			}
 		`
 		return (
 			<div className="main-map">

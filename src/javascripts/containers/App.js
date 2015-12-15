@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import * as Actions from '../actions/actions'
 import MainMap from '../components/MainMap'
 import Sidebar from '../components/Sidebar'
+import Slideshow from '../components/Slideshow'
 
 class App extends Component {
 	render() {
@@ -13,6 +14,7 @@ class App extends Component {
 			<div className={ isIssOverflyingCountry ? "app has-country" : "app"}>
 				<MainMap />
 				<Sidebar />
+				<Slideshow />
 			</div>
 		)
 	}
@@ -69,6 +71,7 @@ class App extends Component {
 		actions.setCountryColor('#fff')
 		actions.defineIfIssIsOverflyingCountry(false)
 		actions.setCountryInfos({})
+		actions.closeSlideshow()
 	}
 	trackIss() {
 		this.updateIssPosition(this.checkAndUpdate.bind(this))
@@ -82,7 +85,7 @@ class App extends Component {
 	startTracking() {
 		this.stopTracking()
 		this.setState({
-			issInterval: window.setInterval(this.trackIss.bind(this), 2000)
+			issInterval: window.setInterval(this.trackIss.bind(this), 1000000)
 		})
 	}
 	stopTracking() {

@@ -23,3 +23,11 @@ export function defineIfIssIsOverflyingCountry(isOverflyingCountry) {
 export function setCountryColor(color) {
 	return { type: types.SET_COUNTRY_COLOR, color }
 }
+
+export function openSlideshow(picture) {
+	return { type: types.OPEN_SLIDESHOW, picture }
+}
+
+export function closeSlideshow() {
+	return { type: types.CLOSE_SLIDESHOW  }
+}

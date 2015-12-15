@@ -6,7 +6,8 @@ const initialState = {
 	iss: {},
 	isIssOverflyingCountry: false,
 	isIssPositionIdentified: false,
-	countryColor: '#fff'
+	countryColor: '#fff',
+	selectedPicture: {}
 }
 
 export default function dataVis(state = initialState, action) {
@@ -30,6 +31,12 @@ export default function dataVis(state = initialState, action) {
 
 		case actionTypes.SET_COUNTRY_COLOR:
 			return Object.assign({}, state, { countryColor: action.color })
+
+		case actionTypes.OPEN_SLIDESHOW:
+			return Object.assign({}, state, { selectedPicture: action.picture })
+
+		case actionTypes.CLOSE_SLIDESHOW:
+			return Object.assign({}, state, { selectedPicture: {} })
 
 		default:
 			return state
