@@ -85,7 +85,7 @@ class App extends Component {
 	startTracking() {
 		this.stopTracking()
 		this.setState({
-			issInterval: window.setInterval(this.trackIss.bind(this), 1000000)
+			issInterval: window.setInterval(this.trackIss.bind(this), 2000)
 		})
 	}
 	stopTracking() {

@@ -301,8 +301,10 @@ $slideshowPadding = 20px
 		position relative
 		width 100%
 		height 100%
+		overflow hidden
 
 	.loading-icon,
+	.loading-placeholder,
 	.slideshow-content
 		position absolute
 		height 100%
@@ -312,13 +314,42 @@ $slideshowPadding = 20px
 		background-size auto
 		background-position center center
 		background-repeat no-repeat
+		opacity 1
+		-webkit-filter blur(0)
+		transition opacity $quick $smoothEase, -webkit-filter $quick $smoothEase
+
+	.loading-icon
 		background-image url('http://jxnblk.com/loading/loading-bubbles.svg')
 
+	.loading-placeholder,
 	.slideshow-content
 		background-size contain
+		-webkit-filter blur(10px)
+
+	&.loaded
+		.loading-placeholder,
+		.slideshow-content
+			-webkit-filter blur(0)
+
+		.loading-placeholder
+			opacity 0
+
+		.slideshow-content
+			opacity 1
+
+	.loading-placeholder
+		z-index 1
+		opacity .5
+
+	.loading-icon
+		z-index 2
+
+	.slideshow-content
+		z-index 3
 
 	.close-button
 		position absolute
+		z-index 4
 		top -20px
 		right -20px
 		font-size 28px
