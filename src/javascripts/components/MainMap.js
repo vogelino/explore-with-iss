@@ -33,7 +33,8 @@ class MainMap extends Component {
 			.leaflet-popup-tip {
 				background: ${countryColor};
 			}
-			.leaflet-container a.leaflet-popup-close-button {
+			.leaflet-container a.leaflet-popup-close-button,
+			.slideshow .close-button {
 				color: ${countryColor};
 			}
 			path.picture-position,

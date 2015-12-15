@@ -17,9 +17,18 @@ class Slideshow extends Component {
 						className="slideshow-content"
 						style={{ backgroundImage: `url(${picurl})` }}>
 					</div>
+					<div
+						onClick={this.closeGallery.bind(this)}
+						className="close-button">
+						×
+					</div>
 				</div>
 			</div>
 		)
+	}
+	closeGallery() {
+		const { actions } = this.props
+		actions.closeSlideshow()
 	}
 }
 
