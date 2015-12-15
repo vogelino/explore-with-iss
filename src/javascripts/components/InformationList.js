@@ -4,6 +4,7 @@ import { formatNumber, formatLanguage, formatTimezone } from '../utils/formatUti
 class InformationList extends Component {
 	render() {
 		const { country } = this.props
+		const formattedTimezones = country.timezones.map(timezone => formatTimezone(timezone)).sort()
 		return (
 			<ul className="country-information-list">
 				<li className="country-information-list-element country-capital">
@@ -46,10 +47,10 @@ class InformationList extends Component {
 						'Timezone' : 'Timezones'}</label>
 					<div className="value">
 						<span className="example-text">UTC </span>
-						{country.timezones.map((timezone, index) => (
+						{formattedTimezones.map((timezone, index) => (
 							<span key={index}>
 								{index === 0 ? '' : ', '}
-								{formatTimezone(timezone)}
+								{timezone >= 0 ? `+${timezone}` : `${timezone}` }
 							</span>
 						))}
 					</div>

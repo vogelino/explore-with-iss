@@ -221,9 +221,21 @@ formatter.formatNumber = (number) => {
 
 
 formatter.formatTimezone = (timezone) => {
-	return replaceAll(timezone, '0', '')
+	let isPos = true
+	let timezonePure = replaceAll(timezone, '0', '')
 		.replace('UTC', '')
 		.replace(':', '')
+
+	if (timezonePure.indexOf('−') >= 0)
+		isPos = false
+
+	timezonePure = timezonePure
+		.replace('+', '')
+		.replace('−', '')
+
+	timezonePure = parseInt(timezonePure, 10)
+
+	return isPos ? timezonePure : timezonePure * -1
 }
 
 

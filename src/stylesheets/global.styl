@@ -66,9 +66,12 @@ a
 	path.country-borders
 		pointer-events none
 
+	path.country-borders,
+	path.picture-position
+		transition fill $quick $smoothEase, stroke $quick $smoothEase
+
 	path.picture-position
 		cursor pointer !important
-		transition fill $quick $smoothEase, stroke $quick $smoothEase
 
 		&:hover
 			fill #fff !important
