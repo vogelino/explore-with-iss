@@ -58,7 +58,7 @@ This project is split in two repositories:
 [<img src="http://demo.vogelino.com/explore-with-iss/play.png" alt="Looking for every country manually"/>](https://vimeo.com/148945877)
 
 ## Gallery
-<img src="http://demo.vogelino.com/explore-with-iss/SearchForPhotosByCOuntry.png" alt="Looking for every country manually"/>
+<img src="http://demo.vogelino.com/explore-with-iss/SearchForPhotosByCOuntry2.png" alt="Looking for every country manually"/>
 To find all images concerning countries all around the world, I had to manually include all of the in the search field of the [_Gateway to Astronaut Photography of Earth_](http://eol.jsc.nasa.gov/) and then import the results with [import.io](https://www.import.io/)
 
 <img src="http://demo.vogelino.com/explore-with-iss/state1.png" alt="First prototype"/>
