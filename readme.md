@@ -55,7 +55,7 @@ This project is split in two repositories:
 - [The API Back-end](https://github.com/vogelino/explore-with-iss-api) was used to wrap other external APIs, to load and process file based datasets and GEOjson files.
 
 ## See it in movement
-[<img src="http://demo.vogelino.com/explore-with-iss/SearchForPhotosByCOuntry.png" alt="Looking for every country manually"/>](https://vimeo.com/148945877)
+[<img src="http://demo.vogelino.com/explore-with-iss/play.png" alt="Looking for every country manually"/>](https://vimeo.com/148945877)
 
 ## Gallery
 <img src="http://demo.vogelino.com/explore-with-iss/SearchForPhotosByCOuntry.png" alt="Looking for every country manually"/>
