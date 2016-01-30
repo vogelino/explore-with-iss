@@ -12,7 +12,7 @@ Run `gulp` and open `http://localhost:3000`
 
 # Explore with the International Space Station
 
-This live data visualization was done at the course [“Input Output - Introduction to process-oriented design”]( https://fhp.incom.org/workspace/6176) supervised by [Fabian Morón Zirfas]( http://fabianmoronzirfas.me/).
+This live data visualization was done at the course [“Input Output - Introduction to process-oriented design”]( https://fhp.incom.org/workspace/6176) supervised by [Fabian Morón Zirfas](https://github.com/fabiantheblind).
 
 This project based itself on the statement:
 
@@ -55,10 +55,10 @@ This project is split in two repositories:
 - [The API Back-end](https://github.com/vogelino/explore-with-iss-api) was used to wrap other external APIs, to load and process file based datasets and GEOjson files.
 
 ## See it in movement
-[<img src="http://demo.vogelino.com/explore-with-iss/SearchForPhotosByCOuntry.png" alt="Looking for every country manually"/>](https://vimeo.com/148945877)
+[<img src="http://demo.vogelino.com/explore-with-iss/play.png" alt="Looking for every country manually"/>](https://vimeo.com/148945877)
 
 ## Gallery
-<img src="http://demo.vogelino.com/explore-with-iss/play.png" alt="Looking for every country manually"/>
+<img src="http://demo.vogelino.com/explore-with-iss/SearchForPhotosByCOuntry2.png" alt="Looking for every country manually"/>
 To find all images concerning countries all around the world, I had to manually include all of the in the search field of the [_Gateway to Astronaut Photography of Earth_](http://eol.jsc.nasa.gov/) and then import the results with [import.io](https://www.import.io/)
 
 <img src="http://demo.vogelino.com/explore-with-iss/state1.png" alt="First prototype"/>
