@@ -35,7 +35,7 @@
     "browser-sync": "^2.9.11",
     "compression": "^1.5.1",
     "del": "^2.0.2",
-    "express": "^4.13.1",
+    "express": "^4.13.4",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-changed": "^1.2.1",
@@ -80,6 +80,7 @@
     "pretty-hrtime": "~1.0.0",
     "redux-devtools": "^2.1.5",
     "require-dir": "^0.3.0",
+    "save": "^2.1.1",
     "vinyl-source-stream": "~1.1.0",
     "webpack": "^1.10.1"
   },

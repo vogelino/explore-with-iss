@@ -6,6 +6,8 @@ import MainMap from '../components/MainMap'
 import Sidebar from '../components/Sidebar'
 import Slideshow from '../components/Slideshow'
 
+const API_URL = 'https://interface.fh-potsdam.de:61426/explore-with-iss-api';
+
 class App extends Component {
 	render() {
 		const { isIssOverflyingCountry } = this.props;
@@ -24,7 +26,7 @@ class App extends Component {
 		this.startTracking()
 	}
 	updateIssPosition(cb) {
-		return fetch('http://localhost:8080/api/iss-country-code')
+		return fetch(`${API_URL}/api/iss-country-code`)
 			.then((response) => {
 				response.json()
 					.then(cb)
@@ -32,7 +34,7 @@ class App extends Component {
 			.catch(this.onFetchPositionFail.bind(this))
 	}
 	updateIssCountry(cb) {
-		return fetch('http://localhost:8080/api/iss-country')
+		return fetch(`${API_URL}/api/iss-country`)
 			.then((response) => {
 				response.json()
 					.then(cb)
