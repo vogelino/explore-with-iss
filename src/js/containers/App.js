@@ -58,6 +58,7 @@ class App extends Component {
 		return data;
 	}
 	onFetchPositionFail() {
+		debugger;
 		const { actions } = this.props;
 		actions.defineIfIssPositionIdentified(false);
 		actions.setIssPosition({});
