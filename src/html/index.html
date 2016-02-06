@@ -1,15 +1,11 @@
-{#
-	Nunjucks Templating!
-	Homepage: https://mozilla.github.io/nunjucks/
-	Docs: https://mozilla.github.io/nunjucks/api.html
-#}
-
-{% extends 'layouts/application.html' %}
-
-{% block content %}
-	<div id="root"></div>
-{% endblock %}
-
-{% block javascript %}
-<script src="javascripts/app.js"></script>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+		<meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<title>{%= o.htmlWebpackPlugin.options.title %}</title>
+	</head>
+	<body>
+		<div id="root"></div>
+	</body>
+</html>
