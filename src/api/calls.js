@@ -77,8 +77,8 @@ calls.getIssCountryCode = () => {
 		.done((data) => {
 			const url = constructUrl(
 				constants.GEONAMES.URL + 'countryCode', {
-					// lat: data.latitude,
-					// lng: data.longitude,
+					lat: data.latitude,
+					lng: data.longitude,
 
 					// Bosnia Herzegowina
 					// lat: 43.8937019,
@@ -101,8 +101,8 @@ calls.getIssCountryCode = () => {
 					// lng: 105.147298,
 
 					// Brasil
-					lat: -7.364855,
-					lng: -48.432910,
+					// lat: -7.364855,
+					// lng: -48.432910,
 
 					// Turkey
 					// lat: 41.306946,
