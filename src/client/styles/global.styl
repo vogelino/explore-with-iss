@@ -1,0 +1,369 @@
+@import url('./lib/leaflet.css')
+
+@import 'variables'
+
+body
+	font-family 'Open sans', Arial, sans-serif
+	margin 0
+	padding 0
+
+body,
+#root,
+.app
+	position absolute
+	width 100%
+	height 100%
+	top 0
+	left 0
+	overflow hidden
+
+a
+	text-decoration none
+	color $linkColor
+	opacity 1
+	transition color $quick $smoothEase, opacity $quick $smoothEase
+
+	&:hover
+		color $linkHoverColor
+		opacity .8
+
+	&.active,
+	&:active
+		color $linkActiveColor
+
+.main-map,
+.main-map > div
+	z-index 1
+	width 100%
+	height 100%
+	box-sizing border-box
+	position absolute
+	top 0
+	right 0
+	transition transform 200ms ease
+	padding 0
+	background $sideBarBackgroundColor
+
+	*
+		cursor default !important
+
+	.has-country &
+		transform translateX(($sidebarWidth / 4))
+
+	.leaflet-container
+		width 100%
+		height 100%
+		position relative
+		float left
+
+	path.country-borders,
+	path.iss-marker,
+	path.picture-position
+		stroke-width 1px
+		stroke-opacity .9
+		fill-opacity .1
+
+	path.country-borders
+		pointer-events none
+
+	path.country-borders,
+	path.picture-position
+		transition fill $quick $smoothEase, stroke $quick $smoothEase
+
+	path.picture-position
+		cursor pointer !important
+
+		&:hover
+			fill #fff !important
+			stroke #fff !important
+
+	.leaflet-popup-content-wrapper
+		border-radius 3px
+
+	.leaflet-popup-content
+		margin 3px 3px 0
+
+	.leaflet-container a.leaflet-popup-close-button:hover {
+		color #fff
+		cursor pointer !important
+		z-index 10
+	}
+
+	.leaflet-popup-tip
+		width 10px
+		height 10px
+
+
+	.leaflet-popup-content-wrapper
+		background $sideBarBackgroundColor
+
+	path.iss-marker
+		fill $sideBarTextColor
+		stroke $sideBarTextColor
+		transform-origin 50% 50%
+		z-index 100
+
+		animation marker .5s $smoothEase infinite alternate
+
+		@keyframes marker
+			0%
+				transform scale(1.0)
+			100%
+				transform scale(1.1)
+
+.main-sidebar
+	z-index 3
+	font-size 12px
+	width $sidebarWidth
+	height 100%
+	box-sizing border-box
+	padding $sidebarPadding
+	position absolute
+	top 0
+	left $sidebarWidth * -1
+	background $sideBarBackgroundColor
+	color $sideBarTextColor
+	transition left 200ms ease
+	border-right 1px solid rgba(0,0,0,.1)
+
+	.has-country &
+		left 0
+
+	.country-name,
+	.country-informations-title,
+	.news-list-title,
+	.country-pictures-title
+		text-transform uppercase
+
+	.country-name
+		margin-bottom 10px
+		font-size 22px
+		line-height 22px
+		position relative
+		float left
+		box-sizing border-box
+		padding-left 60px
+
+		.flag,
+		.main-name,
+		.native-name
+			max-width 300px
+			float left
+			box-sizing border-box
+
+		.flag
+			position absolute
+			left 0
+			top 0
+			max-width 50px
+			max-height 30px
+			border-radius 1px
+
+		.main-name
+			padding 3px 0 0
+			letter-spacing .08em
+
+		.native-name
+			color grey
+			font-weight 300
+			font-size 12px
+			line-height 12px
+			font-family Arial
+			padding 9px 0 5px
+			letter-spacing .05em
+
+	.country-informations-title,
+	.news-list-title,
+	.country-pictures-title
+		width 100%
+		float left
+		font-weight 300
+		font-size 14px
+
+	.country-information-list,
+	.country-information-list-element
+		list-style none
+		margin 0
+		padding 0
+		width 100%
+		float left
+
+		label
+			font-weight 900
+
+		label,
+		.value
+			width 50%
+			padding-bottom 10px
+			float left
+
+	.country-information-list-element .example-text
+		color $discreteColor
+
+	$pictureSize = floor((($sidebarWidth - (2 * $sidebarPadding)) - 15) / 4)
+	.country-pictures
+		width 100%
+		height $pictureSize
+		margin-bottom 10px
+		overflow hidden
+		float left
+
+		.pictures-wrapper
+			width auto
+			white-space nowrap
+			transition transform $quick $smoothEase
+
+		.picture
+			width $pictureSize
+			height $pictureSize
+			display inline-block
+			margin 0 5px 5px 0
+			background-size cover
+			border-radius 3px
+
+	.pictures-gallery
+		width 100%
+		float left
+
+		.controls
+			float right
+			width auto
+
+			a
+				font-size 20px
+				cursor pointer
+				padding 0 5px
+
+				&.disabled
+					color $discreteColor
+					cursor default
+
+		.no-pictures-placeholder
+			width 100%
+			box-sizing border-box
+			border-radius 3px
+			float left
+			padding 5px 10px
+			background lighten($sideBarBackgroundColor, 10%)
+			margin-bottom 20px
+
+
+	.news-list
+		width 100%
+		float left
+		position relative
+
+		ul,
+		li
+			width 100%
+			float left
+			margin 0
+			padding 0
+			list-style-type none
+
+		ul
+			height $newsHeight
+			overflow scroll
+
+		.title
+			margin 0
+
+		.author,
+		.domain
+			font-weight 300
+			font-size 12px
+			color $discreteColor
+
+		.author
+			margin-left 7px
+			text-transform uppercase
+
+		.kwic
+			margin 2px 0 0
+
+		li
+			margin-bottom 20px
+
+		.gradient-overlay
+			position absolute
+			left 0
+			bottom 0
+			pointer-events none
+			width 100%
+			height $newsHeight
+			box-shadow inset 0 -20px 20px -10px $sideBarBackgroundColor
+
+$slideshowPadding = 20px
+.slideshow
+	width 100%
+	height 100%
+	box-sizing border-box
+	padding $slideshowPadding
+	padding-left $sidebarWidth + $slideshowPadding
+	background $sideBarBackgroundColor
+	z-index 1
+	position absolute
+	top 0
+	left 0
+
+	.slideshow-content-wrapper
+		position relative
+		width 100%
+		height 100%
+		overflow hidden
+
+	.loading-icon,
+	.loading-placeholder,
+	.slideshow-content
+		position absolute
+		height 100%
+		width 100%
+		top 0
+		left 0
+		background-size auto
+		background-position center center
+		background-repeat no-repeat
+		opacity 1
+		-webkit-filter blur(0)
+		transition opacity $quick $smoothEase, -webkit-filter $quick $smoothEase
+
+	.loading-icon
+		background-image url('http://jxnblk.com/loading/loading-bubbles.svg')
+
+	.loading-placeholder,
+	.slideshow-content
+		background-size contain
+		-webkit-filter blur(10px)
+
+	&.loaded
+		.loading-placeholder,
+		.slideshow-content
+			-webkit-filter blur(0)
+
+		.loading-placeholder
+			opacity 0
+
+		.slideshow-content
+			opacity 1
+
+	.loading-placeholder
+		z-index 1
+		opacity .5
+
+	.loading-icon
+		z-index 2
+
+	.slideshow-content
+		z-index 3
+
+	.close-button
+		position absolute
+		z-index 4
+		top -20px
+		right -20px
+		font-size 28px
+		background $sideBarBackgroundColor
+		border-radius 3px
+		color $sideBarTextColor
+		padding 10px 20px
+		cursor pointer
