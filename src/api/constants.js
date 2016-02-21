@@ -16,6 +16,6 @@ module.exports = {
 		URL: 'http://www.faroo.com/api?q=__countryName__&kwic=true&start=1&length=' +
 			'10&l=en&src=news&f=json&key=1hvrv5VKvO@dh472ujuO@PZMKH0_'
 	},
-	UPDATE_FREQUENCY: 2000
+	UPDATE_FREQUENCY: 1500
 };
 
