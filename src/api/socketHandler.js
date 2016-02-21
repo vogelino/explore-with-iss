@@ -5,6 +5,7 @@ const { UPDATE_FREQUENCY } = require('./constants');
 const sockets = [];
 let updateTimeout;
 let isUpdating = false;
+let lastCounrtyCode = null;
 
 const that = {};
 
@@ -41,7 +42,9 @@ that.updateIssPosition = () => {
 	}
 	calls.getIssCountryCode()
 		.done((countryCodeRepsonse) => {
-			if (countryCodeRepsonse.countryCode !== null) {
+			const { countryCode } = countryCodeRepsonse;
+			if (countryCode !== null && countryCode !== lastCounrtyCode) {
+				lastCounrtyCode = countryCode;
 				that.updateCountryInformations(countryCodeRepsonse);
 			} else {
 				that.emitToAllSockets('issPositionUpdate', countryCodeRepsonse);
