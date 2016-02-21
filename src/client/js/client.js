@@ -3,19 +3,16 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import Root from './containers/Root';
 import App from './containers/App';
 import configureStore from './store/configureStore';
 
-const initApp = () => {
-	const store = configureStore();
-	const dest = document.getElementById('root');
-	const component = (
-		<Provider store={store}>
-			<App />
-		</Provider>
-	);
+const store = configureStore(window.__INITIAL_STATE__);
+const dest = document.getElementById('root');
+const component = (
+	<Root store={store}>
+		<App />
+	</Root>
+);
 
-	render(component, dest);
-};
-
-window.document.addEventListener('DOMContentLoaded', initApp);
+render(component, dest);

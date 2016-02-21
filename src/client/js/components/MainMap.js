@@ -3,8 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as Actions from '../actions/actions';
 import d3 from 'd3';
-import L from 'leaflet';
-import { Map, CircleMarker, Popup, TileLayer, GeoJson } from 'react-leaflet';
 
 let geoJsonLayerKey = 0;
 class MainMap extends Component {
@@ -17,6 +15,14 @@ class MainMap extends Component {
 		}
 	}
 	render() {
+		if (typeof window !== 'undefined') {
+			return this.getMap.bind(this)();
+		}
+		return <div>Please activate Javascript to use this app</div>;
+	}
+	getMap() {
+		const L = require('leaflet');
+		const { Map, CircleMarker, Popup, TileLayer, GeoJson } = require('react-leaflet');
 		const zoomScale = d3.scale.linear()
 			.domain([ 1000, 17075200 ])
 			.range([ 6, 4 ]);
@@ -93,12 +99,12 @@ class MainMap extends Component {
 								);
 							}
 						}) : false}
-					{this.getGeoJsonLayer.bind(this)()}
+					{this.getGeoJsonLayer.bind(this)(GeoJson)}
 				</Map>
 			</div>
 		);
 	}
-	getGeoJsonLayer() {
+	getGeoJsonLayer(GeoJson) {
 		const { country } = this.props;
 		const { geoJson } = country;
 		if (!geoJson || Object.keys(geoJson).length === 0) {

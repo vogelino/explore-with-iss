@@ -7,15 +7,7 @@ import * as Actions from '../actions/actions';
 import MainMap from '../components/MainMap';
 import Sidebar from '../components/Sidebar';
 import Slideshow from '../components/Slideshow';
-
-const user = 'vogelino';
-const psw = 'KRzj34YNxAVwKuoSfs6Z5Z3H3BYWu4OgzCjajLXp';
-const host = window.location.hostname;
-const port = 61426;
-const url = window.location.href;
-const urlArr = url.split(':');
-const protocol = urlArr[0];
-const API_URL = `${protocol}://${user}:${psw}@${host}:${port}`;
+import Helmet from 'react-helmet';
 
 class App extends Component {
 	render() {
@@ -23,6 +15,22 @@ class App extends Component {
 
 		return (
 			<div className={ isIssOverflyingCountry ? 'app has-country' : 'app'}>
+				<Helmet
+					title="Live position"
+					titleTemplate="Explore with ISS - %s"
+					meta={[
+						{
+							name: 'description',
+							content: `A live data visualization to explore and discover` +
+								`countries by following ISS in its route ` +
+								`| © ${new Date().getFullYear()} vogelino.com`
+						},
+						{
+							property: 'og:type',
+							content: 'singlepage-webapp'
+						}
+					]}
+				/>
 				<MainMap />
 				<Sidebar />
 				<Slideshow />
@@ -30,12 +38,14 @@ class App extends Component {
 		);
 	}
 	componentDidMount() {
-		this.updateIssPosition(this.onFetchPositionDone.bind(this));
-		this.updateIssCountry(this.onFetchCountryDone.bind(this));
-		this.startTracking();
+		if (typeof window !== 'undefined') {
+			this.updateIssPosition(this.onFetchPositionDone.bind(this));
+			this.updateIssCountry(this.onFetchCountryDone.bind(this));
+			this.startTracking();
+		}
 	}
 	updateIssPosition(cb) {
-		return fetch(`${API_URL}/iss-country-code`)
+		return fetch(`/api/iss-country-code`)
 			.then((response) => {
 				response.json()
 					.then(cb);
@@ -43,7 +53,7 @@ class App extends Component {
 			.catch(this.onFetchPositionFail.bind(this));
 	}
 	updateIssCountry(cb) {
-		return fetch(`${API_URL}/iss-country`)
+		return fetch(`/api/iss-country`)
 			.then((response) => {
 				response.json()
 					.then(cb);

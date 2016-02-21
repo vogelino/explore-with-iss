@@ -1,7 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
-var nib = require('nib');
 
 var rootDir = __dirname;
 var clientSrc = './src/client';
