@@ -6,7 +6,7 @@ module.exports = {
 		URL: 'http://api.geonames.org/',
 		USERNAME: 'vogelino',
 		ERRORS: {
-			NO_COUNTRY: 'ERR:15:no country code found\r\n'
+			NO_COUNTRY: 'ERR:15:no country code found'
 		}
 	},
 	RESTCOUNTRIES: {

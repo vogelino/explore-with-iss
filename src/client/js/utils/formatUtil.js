@@ -42,7 +42,6 @@ const formatTimezone = (timezone) => {
 
 
 const formatLanguage = (code) => {
-	console.log(languages);
 	return languages[code] || code;
 };
 

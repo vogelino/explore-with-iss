@@ -5,7 +5,7 @@ const { UPDATE_FREQUENCY } = require('./constants');
 const sockets = [];
 let updateTimeout;
 let isUpdating = false;
-let lastCounrtyCode = null;
+let lastCounrtyCode;
 
 const that = {};
 
