@@ -2,7 +2,6 @@ import * as actionTypes from '../constants/ActionTypes';
 
 const initialState = {
 	country: {},
-	isTracking: true,
 	iss: {},
 	isIssOverflyingCountry: false,
 	isIssPositionIdentified: false,
@@ -25,9 +24,6 @@ export default function dataVis(state = initialState, action) {
 		case actionTypes.DEFINE_IF_ISS_IS_OVERFLYING_COUNTRY:
 			return Object.assign({}, state,
 				{ isIssOverflyingCountry: action.isOverflyingCountry });
-
-		case actionTypes.TOGGLE_TRACKING:
-			return Object.assign({}, state, { isTracking: !state.isTracking });
 
 		case actionTypes.SET_COUNTRY_COLOR:
 			return Object.assign({}, state, { countryColor: action.color });

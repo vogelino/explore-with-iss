@@ -26,13 +26,12 @@ class MainMap extends Component {
 		const zoomScale = d3.scale.linear()
 			.domain([ 1000, 17075200 ])
 			.range([ 6, 4 ]);
-		const { iss, isTracking, country, geoJson,
+		const { iss, country, geoJson,
 			isIssPositionIdentified, isIssOverflyingCountry, countryColor } = this.props;
 		const issPosition = isIssPositionIdentified ?
 			[ iss.latitude, iss.longitude ] : [ 0, 0 ];
 
 		const mapPostition = isIssOverflyingCountry ? country.latlng : issPosition;
-		const mapCenter = isTracking ? issPosition : mapPostition;
 
 		const pathStyles = `
 			.leaflet-popup-content-wrapper {
@@ -58,8 +57,7 @@ class MainMap extends Component {
 			<div className="main-map">
 				<style>{pathStyles}</style>
 				<Map
-					center={country && country.latlng ? country.latlng : mapCenter}
-					// center={mapCenter}
+					center={country && country.latlng ? country.latlng : issPosition}
 					zoom={country && country.latlng ? Math.floor(zoomScale(country.area)) : 4}
 					dragging={false}
 					scrollWheelZoom={false}
@@ -121,7 +119,6 @@ class MainMap extends Component {
 
 MainMap.propTypes = {
 	country: PropTypes.object.isRequired,
-	isTracking: PropTypes.bool.isRequired,
 	isIssOverflyingCountry: PropTypes.bool.isRequired,
 	iss: PropTypes.object.isRequired,
 	isIssPositionIdentified: PropTypes.bool.isRequired,
@@ -131,7 +128,6 @@ MainMap.propTypes = {
 const mapStateToProps = (state) => {
 	return {
 		country: state.dataVis.country,
-		isTracking: state.dataVis.isTracking,
 		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
 		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
 		iss: state.dataVis.iss,

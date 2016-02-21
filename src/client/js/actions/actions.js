@@ -4,10 +4,6 @@ export function setCountryInfos(infos) {
 	return { type: types.SET_COUNTRY_INFOS, infos };
 }
 
-export function toggleTracking() {
-	return { type: types.TOGGLE_TRACKING };
-}
-
 export function setIssPosition(position) {
 	return { type: types.SET_ISS_POSITION, position };
 }

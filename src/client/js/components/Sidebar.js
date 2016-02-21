@@ -10,12 +10,10 @@ import Vibrant from 'node-vibrant';
 
 class Sidebar extends Component {
 	render() {
-		const { country, isIssOverflyingCountry, isTracking } = this.props;
-		const contentHasToBeRendered = isIssOverflyingCountry ||
-			!isTracking && Object.keys(country).length > 0;
+		const { isIssOverflyingCountry } = this.props;
 		return (
 			<div className="main-sidebar">
-				{contentHasToBeRendered ?
+				{isIssOverflyingCountry ?
 					this.getCountryInfo.bind(this)() : false}
 			</div>
 		);
@@ -73,7 +71,6 @@ class Sidebar extends Component {
 
 Sidebar.propTypes = {
 	country: PropTypes.object.isRequired,
-	isTracking: PropTypes.bool.isRequired,
 	isIssOverflyingCountry: PropTypes.bool.isRequired,
 	iss: PropTypes.object.isRequired,
 	isIssPositionIdentified: PropTypes.bool.isRequired,
@@ -83,7 +80,6 @@ Sidebar.propTypes = {
 const mapStateToProps = (state) => {
 	return {
 		country: state.dataVis.country,
-		isTracking: state.dataVis.isTracking,
 		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
 		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
 		iss: state.dataVis.iss,

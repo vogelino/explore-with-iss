@@ -94,7 +94,6 @@ class PicturesGallery extends Component {
 
 PicturesGallery.propTypes = {
 	country: PropTypes.object.isRequired,
-	isTracking: PropTypes.bool.isRequired,
 	isIssOverflyingCountry: PropTypes.bool.isRequired,
 	iss: PropTypes.object.isRequired,
 	isIssPositionIdentified: PropTypes.bool.isRequired,
@@ -105,7 +104,6 @@ PicturesGallery.propTypes = {
 const mapStateToProps = (state) => {
 	return {
 		country: state.dataVis.country,
-		isTracking: state.dataVis.isTracking,
 		isIssOverflyingCountry: state.dataVis.isIssOverflyingCountry,
 		isIssPositionIdentified: state.dataVis.isIssPositionIdentified,
 		iss: state.dataVis.iss,
