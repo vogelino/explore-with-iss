@@ -12,11 +12,13 @@
     "url": "git://github.com/vogelino/explore-with-iss.git"
   },
   "scripts": {
-    "clean": "rm -rf ./public && mkdir ./public",
+    "clean": "rm -rf ./public && mkdir ./public && mkdir ./public/images",
     "watch:client": "./node_modules/.bin/webpack -w",
     "watch:server": "./node_modules/.bin/nodemon --exec ./node_modules/.bin/babel-node ./src/server.js",
     "lint:js": "./node_modules/.bin/eslint ./src/client/js/**.js",
-    "build:client:images": "cp -R ./src/client/images/** ./public/images",
+    "build:client:images:flags": "cp -R ./src/client/images/flags/** ./public/images",
+    "build:client:images:favicons": "cp -R ./src/client/images/favicons/** ./public",
+    "build:client:images": "npm run build:client:images:flags & npm run build:client:images:favicons",
     "build:client:js": "npm run lint:js && ./node_modules/.bin/webpack",
     "build:client:styles:stylus": "stylus ./src/client/styles/index.styl -o ./public/bundle.css",
     "build:client:styles:autoprefixer": "./node_modules/.bin/postcss --use autoprefixer ./public/bundle.css -o ./public/bundle.css",

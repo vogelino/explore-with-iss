@@ -7,7 +7,7 @@ import * as Actions from '../actions/actions';
 import MainMap from '../components/MainMap';
 import Sidebar from '../components/Sidebar';
 import Slideshow from '../components/Slideshow';
-import Helmet from 'react-helmet';
+import MetaTags from '../components/MetaTags';
 
 class App extends Component {
 	render() {
@@ -15,22 +15,7 @@ class App extends Component {
 
 		return (
 			<div className={ isIssOverflyingCountry ? 'app has-country' : 'app'}>
-				<Helmet
-					title="Live position"
-					titleTemplate="Explore with ISS - %s"
-					meta={[
-						{
-							name: 'description',
-							content: `A live data visualization to explore and discover` +
-								`countries by following ISS in its route ` +
-								`| © ${new Date().getFullYear()} vogelino.com`
-						},
-						{
-							property: 'og:type',
-							content: 'singlepage-webapp'
-						}
-					]}
-				/>
+				<MetaTags />
 				<MainMap />
 				<Sidebar />
 				<Slideshow />
