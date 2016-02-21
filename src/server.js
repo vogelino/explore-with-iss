@@ -8,21 +8,13 @@ import Helmet from 'react-helmet';
 import configureStore from './client/js/store/configureStore';
 import { Provider } from 'react-redux';
 import Root from './client/js/containers/Root';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import apiRouter from './api/router';
+import { handleSockets } from './api/socketHandler';
 
 import routes from './routes';
 
 const app = express();
 
 app.use(express.static(__dirname + '/../public'));
-
-// API Middlewares
-app.use('/api', bodyParser.urlencoded({ extended: true }));
-app.use('/api', bodyParser.json());
-app.use('/api', cors());
-app.use('/api', apiRouter);
 
 const renderFullPage = (html, title, meta, initialState) => {
 	return `
@@ -38,6 +30,7 @@ const renderFullPage = (html, title, meta, initialState) => {
 			<script>
 				window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
 			</script>
+			<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
 			<script src="/bundle.js" type="text/javascript"></script>
 		</body>
 	</html>
@@ -77,3 +70,6 @@ server.listen(3003);
 server.on('listening', () => {
 	console.log('Listening on 3003');
 });
+
+const io = require('socket.io')(server);
+handleSockets(io);

@@ -126,15 +126,22 @@ calls.getIssCountryCode = () => {
 			requestDeferred(url)
 				.done((response) => {
 					console.log('GEONAMES-SUCCESS:', response);
+
+					const finalCountryCode = response === constants.NO_COUNTRY ?
+						null : response.trim();
 					dfd.resolve({
 						latitude: data.latitude,
 						longitude: data.longitude,
-						countryCode: response.trim()
+						countryCode: finalCountryCode
 					});
 				})
 				.fail((err) => {
 					console.log('GEONAMES-ERROR:', err);
-					dfd.reject(err);
+					dfd.resolve({
+						latitude: data.latitude,
+						longitude: data.longitude,
+						countryCode: null
+					});
 				});
 		})
 		.fail(dfd.reject);
