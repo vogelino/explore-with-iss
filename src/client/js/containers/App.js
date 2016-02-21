@@ -29,7 +29,7 @@ class App extends Component {
 			socket.on('issPositionUpdate', (positionResponse) => {
 				const { latitude, longitude, countryCode } = positionResponse;
 
-				if (latitude && longitude) {
+				if (!!latitude && !!longitude) {
 					actions.setIssPosition({ latitude, longitude });
 					actions.defineIfIssPositionIdentified(true);
 				} else {

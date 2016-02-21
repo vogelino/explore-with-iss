@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as Actions from '../actions/actions';
+import * as constants from '../constants/MapConstants';
 import d3 from 'd3';
 
 let geoJsonLayerKey = 0;
@@ -18,88 +19,94 @@ class MainMap extends Component {
 		if (typeof window !== 'undefined') {
 			return this.getMap.bind(this)();
 		}
-		return <div>Please activate Javascript to use this app</div>;
+		return <div className="loading-indicator">Retrieving ISS position...</div>;
 	}
 	getMap() {
 		const L = require('leaflet');
 		const { Map, CircleMarker, Popup, TileLayer, GeoJson } = require('react-leaflet');
-		const zoomScale = d3.scale.linear()
-			.domain([ 1000, 17075200 ])
-			.range([ 6, 4 ]);
+		const zoomScale = this.getZoomScale();
 		const { iss, country, geoJson,
 			isIssPositionIdentified, isIssOverflyingCountry, countryColor } = this.props;
 		const issPosition = isIssPositionIdentified ?
 			[ iss.latitude, iss.longitude ] : [ 0, 0 ];
 
-		const mapPostition = isIssOverflyingCountry ? country.latlng : issPosition;
-
-		const pathStyles = `
-			.leaflet-popup-content-wrapper {
-				border: 1px solid ${countryColor};
-			}
-			.leaflet-popup-tip {
-				background: ${countryColor};
-			}
-			.leaflet-container a.leaflet-popup-close-button,
-			.slideshow .close-button {
-				color: ${countryColor};
-			}
-			path.picture-position,
-			path.country-borders {
-				fill: ${countryColor};
-				stroke: ${countryColor};
-			}
-			.picture.active {
-				box-shadow: inset 0 0 0 2px ${countryColor};
-			}
-		`;
 		return (
 			<div className="main-map">
-				<style>{pathStyles}</style>
+				<style>{this.getPathStyles(countryColor)}</style>
 				<Map
 					center={country && country.latlng ? country.latlng : issPosition}
 					zoom={country && country.latlng ? Math.floor(zoomScale(country.area)) : 4}
-					dragging={false}
-					scrollWheelZoom={false}
-					zoomControl={false} >
+					dragging={constants.MAP_DRAGGING}
+					scrollWheelZoom={constants.MAP_SCROLL_WHEEL_ZOOM}
+					zoomControl={constants.MAP_ZOOM_CONTROL} >
 					<TileLayer
 						url='http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
 						subdomains="abcd"
-						maxZoom={19}
-						attribution={false}
+						maxZoom={constants.MAP_MAX_ZOOM}
+						attribution={constants.MAP_ATTRIBUTION}
 					/>
 					{isIssPositionIdentified ?
 						<CircleMarker
 							className="iss-marker"
 							center={issPosition}
-							radius={5}>
+							radius={constants.ISS_MARKER_RADIUS}>
 						</CircleMarker> : false}
 					{isIssOverflyingCountry && country.issPictures ?
 						country.issPictures.map((pic) => {
 							if (!!pic.lat || !!pic.lng) {
-								return (
-									<CircleMarker
-										key={pic.id}
-										className="picture-position"
-										center={[ pic.lat, pic.lng ]}
-										radius={3}>
-										<Popup>
-											<a
-												href={pic.url}
-												target="_blank"
-												title={pic.id} >
-												<img
-													src={pic.thumb}
-													alt={pic.id} />
-											</a>
-										</Popup>
-									</CircleMarker>
-								);
+								this.getPicMarker(pic, CircleMarker, Popup);
 							}
 						}) : false}
 					{this.getGeoJsonLayer.bind(this)(GeoJson)}
 				</Map>
 			</div>
+		);
+	}
+	getZoomScale() {
+		return d3.scale.linear()
+			.domain(constants.MAP_SCALE_DOMAIN)
+			.range(constants.MAP_SCALE_RANGE);
+	}
+	getPathStyles(color) {
+		return `
+			.leaflet-popup-content-wrapper {
+				border: 1px solid ${color};
+			}
+			.leaflet-popup-tip {
+				background: ${color};
+			}
+			.leaflet-container a.leaflet-popup-close-button,
+			.slideshow .close-button {
+				color: ${color};
+			}
+			path.picture-position,
+			path.country-borders {
+				fill: ${color};
+				stroke: ${color};
+			}
+			.picture.active {
+				box-shadow: inset 0 0 0 2px ${color};
+			}
+		`;
+	}
+	getPicMarker(pic, CircleMarker, Popup) {
+		return (
+			<CircleMarker
+				key={pic.id}
+				className="picture-position"
+				center={[ pic.lat, pic.lng ]}
+				radius={3}>
+				<Popup>
+					<a
+						href={pic.url}
+						target="_blank"
+						title={pic.id} >
+						<img
+							src={pic.thumb}
+							alt={pic.id} />
+					</a>
+				</Popup>
+			</CircleMarker>
 		);
 	}
 	getGeoJsonLayer(GeoJson) {
