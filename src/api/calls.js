@@ -127,8 +127,7 @@ calls.getIssCountryCode = () => {
 				.done((response) => {
 					console.log('GEONAMES-SUCCESS:', response);
 
-					const finalCountryCode = response === constants.NO_COUNTRY ?
-						null : response.trim();
+					const finalCountryCode = response.trim() === constants.NO_COUNTRY ? null : response.trim();
 					dfd.resolve({
 						latitude: data.latitude,
 						longitude: data.longitude,
