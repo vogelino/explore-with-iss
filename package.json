@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "A live data visualization to explore and discover countries by following ISS in its route",
   "engines": {
-    "node": "0.12.2",
-    "npm": "2.7.4"
+    "node": "5.4.1",
+    "npm": "3.5.3"
   },
   "homepage": "http://vogelino.github.io/explore-with-iss/",
   "repository": {
@@ -26,7 +26,8 @@
     "watch": "npm run build && npm run watch:server & npm run watch:client",
     "serve:server": "babel-node ./src/server.js",
     "serve": "npm run build && npm run serve:server",
-    "createDocs:js": "esdoc -c esdoc.json"
+    "createDocs:js": "esdoc -c esdoc.json",
+    "start": "npm run serve"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.3",
