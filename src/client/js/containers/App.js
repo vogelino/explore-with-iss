@@ -7,15 +7,7 @@ import * as Actions from '../actions/actions';
 import MainMap from '../components/MainMap';
 import Sidebar from '../components/Sidebar';
 import Slideshow from '../components/Slideshow';
-
-const user = 'vogelino';
-const psw = 'KRzj34YNxAVwKuoSfs6Z5Z3H3BYWu4OgzCjajLXp';
-const host = window.location.hostname;
-const port = 61426;
-const url = window.location.href;
-const urlArr = url.split(':');
-const protocol = urlArr[0];
-const API_URL = `${protocol}://${user}:${psw}@${host}:${port}`;
+import Helmet from 'react-helmet';
 
 class App extends Component {
 	render() {
@@ -23,6 +15,22 @@ class App extends Component {
 
 		return (
 			<div className={ isIssOverflyingCountry ? 'app has-country' : 'app'}>
+				<Helmet
+					title="Live position"
+					titleTemplate="Explore with ISS - %s"
+					meta={[
+						{
+							name: 'description',
+							content: `A live data visualization to explore and discover` +
+								`countries by following ISS in its route ` +
+								`| © ${new Date().getFullYear()} vogelino.com`
+						},
+						{
+							property: 'og:type',
+							content: 'singlepage-webapp'
+						}
+					]}
+				/>
 				<MainMap />
 				<Sidebar />
 				<Slideshow />
@@ -30,81 +38,32 @@ class App extends Component {
 		);
 	}
 	componentDidMount() {
-		this.updateIssPosition(this.onFetchPositionDone.bind(this));
-		this.updateIssCountry(this.onFetchCountryDone.bind(this));
-		this.startTracking();
-	}
-	updateIssPosition(cb) {
-		return fetch(`${API_URL}/iss-country-code`)
-			.then((response) => {
-				response.json()
-					.then(cb);
-			})
-			.catch(this.onFetchPositionFail.bind(this));
-	}
-	updateIssCountry(cb) {
-		return fetch(`${API_URL}/iss-country`)
-			.then((response) => {
-				response.json()
-					.then(cb);
-			})
-			.catch(this.onFetchCountryFail.bind(this));
-	}
-	onFetchPositionDone(data) {
-		const { actions } = this.props;
-		if (data.status) {
-			this.onFetchPositionFail.bind(this)();
-		} else {
-			actions.setIssPosition(data);
-			actions.defineIfIssPositionIdentified(true);
-		}
-		return data;
-	}
-	onFetchPositionFail(error) {
-		const { actions } = this.props;
-		actions.defineIfIssPositionIdentified(false);
-		actions.setIssPosition({});
-		throw error;
-	}
-	onFetchCountryDone(data) {
-		const { actions } = this.props;
-		if (data.status) {
-			this.onFetchCountryFail.bind(this)();
-		} else {
-			actions.setCountryInfos(data);
-			actions.defineIfIssIsOverflyingCountry(true);
-		}
-		return data;
-	}
-	onFetchCountryFail(error) {
-		const { actions } = this.props;
-		actions.setCountryColor('#fff');
-		actions.defineIfIssIsOverflyingCountry(false);
-		actions.setCountryInfos({});
-		actions.closeSlideshow();
-		throw error;
-	}
-	trackIss() {
-		this.updateIssPosition(this.checkAndUpdate.bind(this));
-	}
-	checkAndUpdate(data) {
-		if (data.status) {
-			return;
-		}
-		this.onFetchPositionDone.bind(this)(data);
-		if (this.props.country.alpha2Code !== this.props.iss.countryCode) {
-			this.updateIssCountry(this.onFetchCountryDone.bind(this));
-		}
-	}
-	startTracking() {
-		this.stopTracking();
-		this.setState({
-			issInterval: window.setInterval(this.trackIss.bind(this), 2000)
-		});
-	}
-	stopTracking() {
-		if (this.state && this.state.issInterval) {
-			this.state.issInterval = window.clearInterval(this.state.issInterval);
+		if (typeof window !== 'undefined') {
+			const { actions } = this.props;
+			const socket = window.io();
+			socket.on('issPositionUpdate', (positionResponse) => {
+				const { latitude, longitude, countryCode } = positionResponse;
+
+				if (latitude && longitude) {
+					actions.setIssPosition({ latitude, longitude });
+					actions.defineIfIssPositionIdentified(true);
+				} else {
+					actions.setIssPosition({});
+					actions.closeSlideshow();
+					actions.defineIfIssPositionIdentified(false);
+				}
+
+				if (countryCode === null) {
+					actions.setCountryInfos({});
+					actions.closeSlideshow();
+					actions.setCountryColor('#000');
+					actions.defineIfIssIsOverflyingCountry(false);
+				}
+			});
+			socket.on('issCountryUpdate', (data) => {
+				actions.setCountryInfos(data);
+				actions.defineIfIssIsOverflyingCountry(true);
+			});
 		}
 	}
 }

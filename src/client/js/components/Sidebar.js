@@ -49,7 +49,7 @@ class Sidebar extends Component {
 					<img
 						className="flag"
 						alt={`${countryCode}-flag`}
-						src={`${window.location.href}images/flags/${countryCode}_64.png`}
+						src={`/images/${countryCode}_64.png`}
 						onLoad={this.onFlagLoaded.bind(this)}/>
 					<div className="main-name">{country.name}&nbsp;</div>
 					{country.name.toUpperCase() !== country.nativeName.toUpperCase() ?
