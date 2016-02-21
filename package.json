@@ -27,17 +27,13 @@
     "build": "npm run clean && npm run build:client",
     "watch": "npm run lint:js && npm run build && npm run watch:server & npm run watch:client",
     "serve:server": "./node_modules/.bin/babel-node ./src/server.js",
-    "serve": "npm run build && npm run serve:server",
+    "serve": "npm run serve:server",
     "createDocs:js": "esdoc -c esdoc.json",
     "start": "npm run serve",
     "deploy": "git push heroku master && heroku open"
   },
   "devDependencies": {
-  },
-  "dependencies": {
     "autoprefixer": "^6.3.3",
-    "babel-cli": "^6.5.1",
-    "babel-core": "^6.3.17",
     "babel-eslint": "^5.0.0-beta8",
     "babel-loader": "^6.2.0",
     "babel-plugin-transform-runtime": "^6.3.13",
@@ -46,9 +42,12 @@
     "nodemon": "^1.9.0",
     "postcss": "^5.0.16",
     "postcss-cli": "^2.5.1",
-    "raw-loader": "^0.5.1",
     "stylus": "^0.53.0",
-    "webpack": "^1.12.13",
+    "webpack": "^1.12.13"
+  },
+  "dependencies": {
+    "babel-core": "^6.3.17",
+    "babel-cli": "^6.5.1",
     "babel-polyfill": "^6.3.14",
     "babel-runtime": "^6.3.19",
     "babel-preset-es2015": "^6.3.13",
