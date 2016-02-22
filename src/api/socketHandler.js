@@ -8,6 +8,7 @@ let isUpdating = false;
 let lastCounrtyCode = 'initial';
 const { DEMO } = process.env;
 const isDemo = !!DEMO;
+const hiddenSockets = [];
 
 const that = {};
 
@@ -18,7 +19,7 @@ that.emitToAllSockets = (eventName, data) => {
 };
 
 that.updateWithDelay = () => {
-	if (isDemo) {
+	if (isDemo || hiddenSockets.length === sockets.length) {
 		return;
 	}
 	isUpdating = true;
@@ -62,7 +63,8 @@ that.hasToFetchCounrtyInfo = (countryBefore, countryNow) => {
 	return !countryBeforeIsValid && countryNowIsValid ? true : false;
 };
 
-that.isValidCountry = country => typeof country === 'string' && country.length === 2;
+that.isValidCountry = country =>
+	typeof country === 'string' && country.length === 2;
 
 that.handleSockets = (io) => {
 	io.sockets.on('connection', (newSocket) => {
@@ -75,6 +77,12 @@ that.handleSockets = (io) => {
 			if (sockets.length === 0) {
 				that.stopUpdate();
 			}
+		});
+		newSocket.on('windowHidden', () => {
+			hiddenSockets.push(newSocket);
+		});
+		newSocket.on('windowShown', () => {
+			hiddenSockets.splice(hiddenSockets.indexOf(newSocket), 1);
 		});
 	});
 };
