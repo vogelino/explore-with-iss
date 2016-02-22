@@ -8,6 +8,7 @@ import MainMap from '../components/MainMap';
 import Sidebar from '../components/Sidebar';
 import Slideshow from '../components/Slideshow';
 import MetaTags from '../components/MetaTags';
+import visibility from 'visibility';
 
 class App extends Component {
 	render() {
@@ -23,6 +24,9 @@ class App extends Component {
 		);
 	}
 	componentDidMount() {
+		this.initSockets.bind(this)();
+	}
+	initSockets() {
 		if (typeof window !== 'undefined') {
 			const { actions } = this.props;
 			const socket = window.io();
@@ -48,6 +52,13 @@ class App extends Component {
 			socket.on('issCountryUpdate', (data) => {
 				actions.setCountryInfos(data);
 				actions.defineIfIssIsOverflyingCountry(true);
+			});
+			const watcher = visibility();
+			watcher.on('hide', () => {
+				socket.emit('windowHidden');
+			});
+			watcher.on('show', () => {
+				socket.emit('windowShown');
 			});
 		}
 	}

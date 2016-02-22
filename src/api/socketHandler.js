@@ -8,6 +8,7 @@ let isUpdating = false;
 let lastCounrtyCode = 'initial';
 const { DEMO } = process.env;
 const isDemo = !!DEMO;
+const hiddenSockets = [];
 
 const that = {};
 
@@ -18,7 +19,7 @@ that.emitToAllSockets = (eventName, data) => {
 };
 
 that.updateWithDelay = () => {
-	if (isDemo) {
+	if (isDemo || hiddenSockets.length === sockets.length) {
 		return;
 	}
 	isUpdating = true;
@@ -76,6 +77,12 @@ that.handleSockets = (io) => {
 			if (sockets.length === 0) {
 				that.stopUpdate();
 			}
+		});
+		newSocket.on('windowHidden', () => {
+			hiddenSockets.push(newSocket);
+		});
+		newSocket.on('windowShown', () => {
+			hiddenSockets.splice(hiddenSockets.indexOf(newSocket), 1);
 		});
 	});
 };
