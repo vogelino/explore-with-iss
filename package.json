@@ -30,7 +30,7 @@
     "serve": "npm run serve:server",
     "createDocs:js": "esdoc -c esdoc.json",
     "start": "npm run serve",
-    "deploy": "git push heroku master && heroku open"
+    "deploy": "npm run build && git push heroku master && heroku open"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.3",
