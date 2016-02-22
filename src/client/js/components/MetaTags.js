@@ -1,3 +1,4 @@
+/* global window */
 import React from 'react';
 import Helmet from 'react-helmet';
 
@@ -7,7 +8,7 @@ const fullTitle = 'Explore earth along with the International Space Station';
 const fullDescription = `A live data visualization to explore and discover` +
 	`countries by following ISS in its route ` +
 	`| © ${new Date().getFullYear()} by vogelino.com`;
-const contentUrl = 'https://explore-with-iss.herokuapp.com/';
+const contentUrl = typeof window === 'undefined' ? 'https://explore-with-iss.herokuapp.com/' : window.location.href;
 
 export default () =>
 	<Helmet
@@ -22,9 +23,9 @@ export default () =>
 
 			{ itemprop: 'name', content: fullTitle },
 			{ itemprop: 'description', content: fullDescription },
-			{ itemprop: 'image', content: '/social-thumnail.jpg' },
+			{ itemprop: 'image', content: `${contentUrl}/social-thumnail.jpg` },
 
-			{ name: 'twitter:card', content: '/social-thumnail.jpg' },
+			{ name: 'twitter:card', content: `${contentUrl}/social-thumnail.jpg` },
 			{ name: 'twitter:site', content: 'article' },
 			{ name: 'twitter:title', content: contentUrl },
 			{ name: 'twitter:description', content: fullDescription },
@@ -33,7 +34,7 @@ export default () =>
 			{ property: 'og:title', content: fullTitle },
 			{ property: 'og:type', content: 'article' },
 			{ property: 'og:url', content: contentUrl },
-			{ property: 'og:image', content: '/social-thumnail.jpg' },
+			{ property: 'og:image', content: `${contentUrl}/social-thumnail.jpg` },
 			{ property: 'og:description', content: fullDescription },
 			{ property: 'og:site_name', content: shortTitle },
 			{ property: 'fb:admins', content: '186064998091648' }
