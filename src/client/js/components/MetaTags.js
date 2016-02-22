@@ -2,34 +2,41 @@ import React from 'react';
 import Helmet from 'react-helmet';
 
 const faviconVersion = 'OmmGnv49vk';
+const shortTitle = 'Explore with ISS';
+const fullTitle = 'Explore earth along with the International Space Station';
+const fullDescription = `A live data visualization to explore and discover` +
+	`countries by following ISS in its route ` +
+	`| © ${new Date().getFullYear()} by vogelino.com`;
+const contentUrl = 'https://explore-with-iss.herokuapp.com/';
 
 export default () =>
 	<Helmet
 		title='Live position'
-		titleTemplate='Explore with ISS - %s'
+		titleTemplate={`${shortTitle} - %s`}
 		meta={[
-			{
-				name: 'description',
-				content: `A live data visualization to explore and discover` +
-					`countries by following ISS in its route ` +
-					`| © ${new Date().getFullYear()} vogelino.com`
-			},
-			{
-				property: 'og:type',
-				content: 'singlepage-webapp'
-			},
-			{
-				name: 'msapplication-TileColor',
-				content: '#da532c'
-			},
-			{
-				name: 'msapplication-TileImage',
-				content: `/mstile-144x144.png?v=${faviconVersion}`
-			},
-			{
-				name: 'theme-color',
-				content: '#2e2e2e'
-			}
+			{ name: 'description', content: fullDescription },
+			{ property: 'og:type', content: 'singlepage-webapp' },
+			{ name: 'msapplication-TileColor', content: '#da532c' },
+			{ name: 'msapplication-TileImage', content: `/mstile-144x144.png?v=${faviconVersion}` },
+			{ name: 'theme-color', content: '#2e2e2e' },
+
+			{ itemprop: 'name', content: fullTitle },
+			{ itemprop: 'description', content: fullDescription },
+			{ itemprop: 'image', content: '/social-thumnail.jpg' },
+
+			{ name: 'twitter:card', content: '/social-thumnail.jpg' },
+			{ name: 'twitter:site', content: 'article' },
+			{ name: 'twitter:title', content: contentUrl },
+			{ name: 'twitter:description', content: fullDescription },
+			{ name: 'twitter:creator', content: '@soyvogelino' },
+
+			{ property: 'og:title', content: fullTitle },
+			{ property: 'og:type', content: 'article' },
+			{ property: 'og:url', content: contentUrl },
+			{ property: 'og:image', content: '/social-thumnail.jpg' },
+			{ property: 'og:description', content: fullDescription },
+			{ property: 'og:site_name', content: shortTitle },
+			{ property: 'fb:admins', content: '186064998091648' }
 		]}
 		link={[
 			{ rel: 'apple-touch-icon', sizes: '57x57', href: `/apple-touch-icon-57x57.png?v=${faviconVersion}` },
