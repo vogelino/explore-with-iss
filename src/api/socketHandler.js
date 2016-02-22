@@ -66,9 +66,8 @@ that.hasToFetchCounrtyInfo = (country) => {
 };
 
 that.updateSocketsCoutries = (countryCode) => {
-	sockets = sockets.map((socket) => {
+	sockets.forEach((socket) => {
 		socket.country = countryCode;
-		return socket;
 	});
 };
 
