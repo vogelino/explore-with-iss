@@ -5,7 +5,6 @@ const { UPDATE_FREQUENCY } = require('./constants');
 const sockets = [];
 let updateTimeout;
 let isUpdating = false;
-let lastCounrtyCode = 'initial';
 const { DEMO } = process.env;
 const isDemo = !!DEMO;
 const hiddenSockets = [];
@@ -47,9 +46,9 @@ that.updateIssPosition = () => {
 	calls.getIssCountryCode()
 		.done((countryCodeRepsonse) => {
 			const { countryCode } = countryCodeRepsonse;
-			const hasToFetchCounrtyInfo = that.hasToFetchCounrtyInfo(lastCounrtyCode, countryCode);
+			const hasToFetchCounrtyInfo = that.hasToFetchCounrtyInfo(countryCode);
 			if (hasToFetchCounrtyInfo) {
-				lastCounrtyCode = countryCode;
+				that.updateSocketsCoutries(sockets, countryCode);
 				that.updateCountryInformations(countryCode);
 			}
 			that.emitToAllSockets('issPositionUpdate', countryCodeRepsonse);
@@ -57,10 +56,20 @@ that.updateIssPosition = () => {
 		});
 };
 
-that.hasToFetchCounrtyInfo = (countryBefore, countryNow) => {
-	const countryBeforeIsValid = that.isValidCountry(countryBefore);
-	const countryNowIsValid = that.isValidCountry(countryNow);
-	return !countryBeforeIsValid && countryNowIsValid ? true : false;
+that.hasToFetchCounrtyInfo = (country) => {
+	const socketsWithcountries = sockets.filter((socket) => !!socket.country);
+	const countryNowIsValid = that.isValidCountry(country);
+	return sockets.every(socket => {
+		const countryBeforeIsValid = that.isValidCountry(country);
+		return !countryBeforeIsValid && countryNowIsValid ? true : false;
+	});
+};
+
+that.updateSocketsCoutries = (countryCode) => {
+	sockets = sockets.map((socket) => {
+		socket.country = countryCode;
+		return socket;
+	});
 };
 
 that.isValidCountry = country =>
