@@ -1,4 +1,4 @@
-[![Heroku](http://heroku-badge.herokuapp.com/?app=explore-with-iss&style=flat&svg=1)](https://explore-with-iss.herokuapp.com/) | [![David Dev Dependencies](https://david-dm.org/vogelino/explore-with-iss/dev-status.svg)](https://david-dm.org/vogelino/explore-with-iss#info=devDependencies&view=table) | [![David Dev Dependencies](https://david-dm.org/vogelino/explore-with-iss.svg)](https://david-dm.org/vogelino/explore-with-iss#info=dependencies&view=table)
+[![Heroku](http://heroku-badge.herokuapp.com/?app=explore-with-iss&style=flat&svg=1)](https://explore-with-iss.herokuapp.com/) [![David Dev Dependencies](https://david-dm.org/vogelino/explore-with-iss/dev-status.svg)](https://david-dm.org/vogelino/explore-with-iss#info=devDependencies&view=table) [![David Dev Dependencies](https://david-dm.org/vogelino/explore-with-iss.svg)](https://david-dm.org/vogelino/explore-with-iss#info=dependencies&view=table)
 
 #### Installation
 ```
