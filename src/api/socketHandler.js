@@ -25,11 +25,9 @@ that.stopUpdate = () => {
 	clearTimeout(updateTimeout);
 };
 
-that.updateCountryInformations = (countryCodeRepsonse) => {
-	const { latitude, longitude, countryCode } = countryCodeRepsonse;
+that.updateCountryInformations = (countryCode) => {
 	calls.getCountryInfo(countryCode)
 		.done((data) => {
-			that.emitToAllSockets('issPositionUpdate', { latitude, longitude });
 			that.emitToAllSockets('issCountryUpdate', data);
 
 			that.updateWithDelay();
@@ -45,11 +43,10 @@ that.updateIssPosition = () => {
 			const { countryCode } = countryCodeRepsonse;
 			if (countryCode !== null || countryCode !== lastCounrtyCode) {
 				lastCounrtyCode = countryCode;
-				that.updateCountryInformations(countryCodeRepsonse);
-			} else {
-				that.emitToAllSockets('issPositionUpdate', countryCodeRepsonse);
-				that.updateWithDelay();
+				that.updateCountryInformations(countryCode);
 			}
+			that.emitToAllSockets('issPositionUpdate', countryCodeRepsonse);
+			that.updateWithDelay();
 		});
 };
 
