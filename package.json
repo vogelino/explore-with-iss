@@ -30,6 +30,7 @@
     "deploy": "npm run build && git push heroku master && heroku open"
   },
   "devDependencies": {
+    "autoprefixer": "^6.3.3",
     "babel-eslint": "^5.0.0-beta8",
     "babel-loader": "^6.2.0",
     "babel-plugin-transform-runtime": "^6.3.13",
@@ -39,6 +40,7 @@
     "file-loader": "^0.8.5",
     "nib": "^1.1.0",
     "nodemon": "^1.9.0",
+    "postcss": "^5.0.16",
     "postcss-cli": "^2.5.1",
     "style-loader": "^0.13.0",
     "stylus": "^0.53.0",

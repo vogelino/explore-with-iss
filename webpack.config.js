@@ -55,6 +55,8 @@ var config = {
 
 if (process.env.NODE_ENV === 'development') {
 	config.devtool = 'source-map';
+} else if (process.env.NODE_ENV === 'production') {
+	config.plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
 module.exports = config;
