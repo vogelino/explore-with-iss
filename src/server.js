@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import Root from './client/js/containers/Root';
 import { handleSockets } from './api/socketHandler';
 import request from 'request';
+import fs from 'fs';
 
 import routes from './routes';
 
@@ -50,15 +51,12 @@ const renderFullPage = (html, title, meta, state) => {
 };
 
 const handleRender = (req, res, props) => {
-	request.get({
-		url: 'https://api.github.com/repos/vogelino/explore-with-iss/readme',
-		headers: { 'User-Agent': 'request' }
-	}, (err, response, body) => {
-		if (!err && response.statusCode === 200) {
-			const parsedResponse = JSON.parse(body).content;
-			const markdownString = new Buffer(parsedResponse, 'base64').toString();
-			console.log(markdownString);
-			initialState.aboutContent = markdownString;
+	fs.readFile(__dirname + '/../readme.md', (err, fileContent) => {
+		if (!err) {
+			console.log(fileContent.toString());
+			initialState.aboutContent = fileContent.toString();
+		} else {
+			console.log('ERR:', err);
 		}
 		const store = configureStore(initialState);
 		const html = renderToString(
