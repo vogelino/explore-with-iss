@@ -27,7 +27,7 @@
     "serve": "npm run serve:server",
     "createDocs:js": "esdoc -c esdoc.json",
     "start": "npm run serve",
-    "prepare": "NODE_ENV=production && npm run build && git add --all && git commit -am'Prepared for Heroku deployment'"
+    "prepare": "NODE_ENV=production && npm run build"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.3",
