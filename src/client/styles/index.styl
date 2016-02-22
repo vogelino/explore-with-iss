@@ -31,6 +31,16 @@ a
 	&:active
 		color $linkActiveColor
 
+.loading-indicator
+	position absolute
+	width 100%
+	height 100%
+	background-color $sideBarBackgroundColor
+	background-position center
+	background-repeat no-repeat
+	background-size auto auto
+	background-image url($loadingIcon)
+
 .main-map,
 .main-map > div
 	z-index 1
@@ -328,7 +338,7 @@ $slideshowPadding = 20px
 		transition opacity $quick $smoothEase, -webkit-filter $quick $smoothEase
 
 	.loading-icon
-		background-image url('http://jxnblk.com/loading/loading-bubbles.svg')
+		background-image url($loadingIcon)
 
 	.loading-placeholder,
 	.slideshow-content
