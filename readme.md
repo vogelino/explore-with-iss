@@ -54,7 +54,7 @@ As additional fancy feature, the color of the links and borders are country-spec
 ## The tech part
 
 This project contains client and server side rendering:
-- The Front-end client, which application's structure is build with Redux and react, allowing the use of a single and declarative App state.
+- The Front-end client, which application's structure is build with Redux, takes care of rendering the React components.
 - The Back-end, which calls other external APIs, to load and process file based datasets and GEOjson files and notifies the client(s) with socket.io.
 
 ## See it in movement
@@ -94,13 +94,13 @@ Some pictures are really impressive
 
 ## Back-end calls to external APIs
 
-#### **getIssPosition:** ```/iss-position```
+#### **getIssPosition:** ```params: none```
 ```getIssPosition``` makes a request to the [Open notify API](http://open-notify.org/) and retrieves the actual latitude and longitude of the International Space Station
 
-#### **getIssCountryCode:** ```/iss-country-code```
+#### **getIssCountryCode:** ```params: none```
 ```getIssCountryCode``` makes a request to the [Open notify API](http://open-notify.org/) first, and then requests the [Geonames API](http://api.geonames.org/) to map the ISS position to the country it belongs to. It retrieves the latitude, longitude and the alpha code of the country.
 
-#### **getCountryInfo:** ```/iss-country/:country_code```
+#### **getCountryInfo:** ```params: country_code```
 ```getCountryInfo``` is the most complex call as it combines many sources of information. It requires an alpha code as unique argument. The call processes the following filtering, data gathering and formatting operations:
 - It loads a GEOjson file containing the shapes of the borders of all countries and finds the relevant one.
 - It loads a json file containing [all pictures of all ISS missions](https://github.com/natronics/ISS-photo-locations/) and filters the ones corresponding to the relevant country.
@@ -108,5 +108,5 @@ Some pictures are really impressive
 - It calls the [Faroo API](http://www.faroo.com) to get all news related to this country
 ```getCountryInfo``` returns a formatted json with all concatenated informations.
 
-#### **getIssCountry:** ```/iss-country```
+#### **getIssCountry:** ```params: none```
 ```getIssCountry``` first calls ```getIssCountryCode``` and then uses the alpha code response to request ```getCountryInfo```. It is the most complete call. It retrieves a full response with all informations available, without needing to know the actual country code or position.
