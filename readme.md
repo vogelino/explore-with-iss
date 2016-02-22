@@ -1,3 +1,5 @@
+[![Heroku](http://heroku-badge.herokuapp.com/?app=explore-with-iss&style=flat&svg=1)](https://explore-with-iss.herokuapp.com/)
+
 #### Installation
 ```
 git clone https://github.com/vogelino/explore-with-iss.git
@@ -6,7 +8,8 @@ npm install
 ```
 
 #### Use
-Run `gulp` and open `http://localhost:3000`
+Run `npm start` and open `http://localhost:3003`
+Or run `npm run watch` and open `http://localhost:3003` for development
 
 ---
 
@@ -50,9 +53,9 @@ As additional fancy feature, the color of the links and borders are country-spec
 
 ## The tech part
 
-This project is split in two repositories:
-- The Front-end client (this one), which application's structure is build with Redux and react, allowing the use of a single and declarative App state.
-- [The API Back-end](https://github.com/vogelino/explore-with-iss-api) was used to wrap other external APIs, to load and process file based datasets and GEOjson files.
+This project contains client and server side rendering:
+- The Front-end client, which application's structure is build with Redux and react, allowing the use of a single and declarative App state.
+- The Back-end, which calls other external APIs, to load and process file based datasets and GEOjson files and notifies the client(s) with socket.io.
 
 ## See it in movement
 [<img src="http://demo.vogelino.com/explore-with-iss/play.png" alt="Looking for every country manually"/>](https://vimeo.com/148945877)
@@ -88,3 +91,22 @@ When the image loads it appears blurry and a tiny animated loading icon is displ
 <img src="http://demo.vogelino.com/explore-with-iss/state6-turkey-slideshow.png" alt="Iss view of Turkey - Image slideshow"/>
 Some pictures are really impressive
 
+
+## Back-end calls to external APIs
+
+#### **getIssPosition:** ```/iss-position```
+```getIssPosition``` makes a request to the [Open notify API](http://open-notify.org/) and retrieves the actual latitude and longitude of the International Space Station
+
+#### **getIssCountryCode:** ```/iss-country-code```
+```getIssCountryCode``` makes a request to the [Open notify API](http://open-notify.org/) first, and then requests the [Geonames API](http://api.geonames.org/) to map the ISS position to the country it belongs to. It retrieves the latitude, longitude and the alpha code of the country.
+
+#### **getCountryInfo:** ```/iss-country/:country_code```
+```getCountryInfo``` is the most complex call as it combines many sources of information. It requires an alpha code as unique argument. The call processes the following filtering, data gathering and formatting operations:
+- It loads a GEOjson file containing the shapes of the borders of all countries and finds the relevant one.
+- It loads a json file containing [all pictures of all ISS missions](https://github.com/natronics/ISS-photo-locations/) and filters the ones corresponding to the relevant country.
+- It calls the [RestCountries API](https://restcountries.eu/) to gather basic data about the country (name, language, currency, etc.)
+- It calls the [Faroo API](http://www.faroo.com) to get all news related to this country
+```getCountryInfo``` returns a formatted json with all concatenated informations.
+
+#### **getIssCountry:** ```/iss-country```
+```getIssCountry``` first calls ```getIssCountryCode``` and then uses the alpha code response to request ```getCountryInfo```. It is the most complete call. It retrieves a full response with all informations available, without needing to know the actual country code or position.
