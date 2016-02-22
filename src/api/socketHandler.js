@@ -6,6 +6,8 @@ const sockets = [];
 let updateTimeout;
 let isUpdating = false;
 let lastCounrtyCode = 'initial';
+const { DEMO } = process.env;
+const isDemo = !!DEMO;
 
 const that = {};
 
@@ -16,6 +18,9 @@ that.emitToAllSockets = (eventName, data) => {
 };
 
 that.updateWithDelay = () => {
+	if (isDemo) {
+		return;
+	}
 	isUpdating = true;
 	updateTimeout = setTimeout(that.updateIssPosition, UPDATE_FREQUENCY);
 };

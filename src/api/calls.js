@@ -5,7 +5,9 @@ let GEOjson = require('./staticData/counrtyShapes.min.json');
 let Pics = require('./staticData/issPics-formatted.min.json');
 
 const calls = {};
-const demo = false;
+const { NODE_ENV, DEMO } = process.env;
+const isDemo = !!DEMO;
+const isDevelopment = NODE_ENV === 'development';
 
 const requestDeferred = (url) => {
 	const dfd = new Deferred();
@@ -27,29 +29,24 @@ const requestDeferred = (url) => {
 	return dfd.promise();
 };
 
-const constructParameters = (parameters) => {
-	return Object.keys(parameters).reduce((prevKey, currentKey, index) => {
-		return (index === 1 ? prevKey + '=' + parameters[prevKey] + '&' : prevKey + '&') +
-			currentKey + '=' + parameters[currentKey];
-	});
-};
-
-const constructUrl = (baseUrl, parameters) => {
-	return baseUrl + '?' + constructParameters(parameters);
-};
-
 calls.getIssPosition = () => {
 	const dfd = new Deferred();
+
+	if (isDemo) {
+		console.log('SHOWING OVERRIDEN DATA FOR DEMO:', constants.DEMO_LAT_LNG);
+		const issPosition = constants.DEMO_LAT_LNG;
+
+		return dfd.resolve({
+			latitude: issPosition.latitude,
+			longitude: issPosition.longitude
+		}).promise();
+	}
 
 	requestDeferred(constants.OPEN_NOTIFY.URL)
 		.done((data) => {
 			/* eslint-disable camelcase */
 			let issPosition = JSON.parse(data).iss_position;
 			/* eslint-disable camelcase */
-			if (demo === true) {
-				console.log('SHOWING OVERRIDEN DATA FOR DEMO:', constants.DEMO_LAT_LNG);
-				issPosition = constants.DEMO_LAT_LNG;
-			}
 			dfd.resolve({
 				latitude: issPosition.latitude,
 				longitude: issPosition.longitude
@@ -79,14 +76,14 @@ calls.getIssCountryCode = () => {
 
 	calls.getIssPosition()
 		.done((data) => {
-			const url = constructUrl(
-				constants.GEONAMES.URL + 'countryCode', {
-					lat: data.latitude,
-					lng: data.longitude,
-					username: constants.GEONAMES.USERNAME
-				});
+			const url = constants.GEONAMES.URL
+				.replace('__lat__', data.latitude)
+				.replace('__lng__', data.longitude)
+				.replace('__username__', constants.GEONAMES.USERNAME);
 
-			console.log('Calling Geonames API with url: ' + url);
+			if (isDevelopment) {
+				console.log('Calling Geonames API with url: ' + url);
+			}
 			requestDeferred(url)
 				.done((response) => {
 					console.log('GEONAMES-SUCCESS:', response);
@@ -128,7 +125,11 @@ calls.getCountryInfo = (countryCode) => {
 
 	const restCtryUrl = constants.RESTCOUNTRIES.URL
 		.replace('__countryCode__', countryCode);
-	console.log('Calling RestCountries API with url: ' + restCtryUrl);
+
+	if (isDevelopment) {
+		console.log('Calling RestCountries API with url: ' + restCtryUrl);
+	}
+
 	requestDeferred(restCtryUrl)
 		.done((response) => {
 			const data = JSON.parse(response)[0];
