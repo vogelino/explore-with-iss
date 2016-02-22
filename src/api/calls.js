@@ -6,7 +6,7 @@ let Pics = require('./staticData/issPics-formatted.min.json');
 
 const calls = {};
 const { NODE_ENV, DEMO } = process.env;
-const isDemo = !!DEMO;
+const isDemo = DEMO === 'true';
 const isDevelopment = NODE_ENV === 'development';
 
 const requestDeferred = (url) => {
@@ -14,14 +14,11 @@ const requestDeferred = (url) => {
 
 	request(url, (err, response, body) => {
 		if (!err && response.statusCode === 200) {
-			console.info('Success:', body);
 			dfd.resolve(body);
 		}
 		if (!err && response.statusCode !== 200) {
-			console.error('Error:', body);
 			dfd.reject(body);
 		} else {
-			console.error('Error:', err);
 			dfd.reject(err);
 		}
 	});
@@ -42,6 +39,7 @@ calls.getIssPosition = () => {
 		}).promise();
 	}
 
+	console.log('Fetching iss position');
 	requestDeferred(constants.OPEN_NOTIFY.URL)
 		.done((data) => {
 			/* eslint-disable camelcase */
@@ -81,14 +79,12 @@ calls.getIssCountryCode = () => {
 				.replace('__lng__', data.longitude)
 				.replace('__username__', constants.GEONAMES.USERNAME);
 
-			if (isDevelopment) {
-				console.log('Calling Geonames API with url: ' + url);
-			}
+			console.log('Fetching the country code');
 			requestDeferred(url)
 				.done((response) => {
-					console.log('GEONAMES-SUCCESS:', response);
 					const trimmedResponse = response.trim();
 					const finalCountryCode = trimmedResponse.startsWith('ERR') ? null : trimmedResponse;
+					console.log('Country code:', finalCountryCode);
 					dfd.resolve({
 						latitude: data.latitude,
 						longitude: data.longitude,
@@ -96,7 +92,7 @@ calls.getIssCountryCode = () => {
 					});
 				})
 				.fail((err) => {
-					console.log('GEONAMES-ERROR:', err);
+					console.log('Country code error:', err);
 					dfd.resolve({
 						latitude: data.latitude,
 						longitude: data.longitude,
@@ -127,7 +123,7 @@ calls.getCountryInfo = (countryCode) => {
 		.replace('__countryCode__', countryCode);
 
 	if (isDevelopment) {
-		console.log('Calling RestCountries API with url: ' + restCtryUrl);
+		console.log('Fetching country Informations');
 	}
 
 	requestDeferred(restCtryUrl)
@@ -136,7 +132,7 @@ calls.getCountryInfo = (countryCode) => {
 			const farooUrl = constants.FAROO.URL
 				.replace('__countryName__', data.name);
 
-			console.log('Calling Faroo API with url: ' + farooUrl);
+			console.log('Fetching news');
 			requestDeferred(farooUrl)
 				.done((farooResponse) => {
 					const news = JSON.parse(farooResponse).results;
@@ -152,7 +148,7 @@ calls.getCountryInfo = (countryCode) => {
 					data.news = farooResponse;
 					data.issPictures = pictures ? pictures : [];
 
-					console.log('Resolving data:', data);
+					console.log('News successfully fetched');
 					mainDfd.resolve(data);
 				})
 				.fail(() => {
