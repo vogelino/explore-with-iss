@@ -1,0 +1,89 @@
+.loading-indicator
+	position absolute
+	width 100%
+	height 100%
+	background-color $sideBarBackgroundColor
+	background-position center
+	background-repeat no-repeat
+	background-size auto auto
+	background-image url($loadingIcon)
+
+.main-map,
+.main-map > div
+	z-index 1
+	width 100%
+	height 100%
+	box-sizing border-box
+	position absolute
+	top 0
+	right 0
+	transition transform 200ms ease
+	padding 0
+	background $sideBarBackgroundColor
+
+	*
+		cursor default !important
+
+	.has-country &
+		transform translateX(($sidebarWidth / 4))
+
+	.leaflet-container
+		width 100%
+		height 100%
+		position relative
+		float left
+
+	path.country-borders,
+	path.iss-marker,
+	path.picture-position
+		stroke-width 1px
+		stroke-opacity .9
+		fill-opacity .1
+
+	path.country-borders
+		pointer-events none
+
+	path.country-borders,
+	path.picture-position
+		transition fill $quick $smoothEase, stroke $quick $smoothEase
+
+	path.picture-position
+		cursor pointer !important
+
+		&:hover
+			fill #fff !important
+			stroke #fff !important
+
+	.leaflet-popup-content-wrapper
+		border-radius 3px
+
+	.leaflet-popup-content
+		margin 3px 3px 0
+
+	.leaflet-container a.leaflet-popup-close-button:hover {
+		color #fff
+		cursor pointer !important
+		z-index 10
+	}
+
+	.leaflet-popup-tip
+		width 10px
+		height 10px
+
+
+	.leaflet-popup-content-wrapper
+		background $sideBarBackgroundColor
+
+	path.iss-marker
+		fill $sideBarTextColor
+		stroke $sideBarTextColor
+		transform-origin 50% 50%
+		z-index 100
+
+		animation marker .5s $smoothEase infinite alternate
+
+		@keyframes marker
+			0%
+				transform scale(1.0)
+			100%
+				transform scale(1.1)
