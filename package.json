@@ -22,12 +22,12 @@
     "build:client:js": "./node_modules/.bin/webpack",
     "build:client": "npm run build:client:js & npm run build:client:images",
     "build": "npm run clean && npm run build:client",
-    "watch": "NODE_ENV=development && npm run lint:js && npm run build && npm run watch:server & npm run watch:client",
+    "watch": "export NODE_ENV=development && npm run lint:js && npm run build && npm run watch:server & npm run watch:client",
     "serve:server": "./node_modules/.bin/babel-node ./src/server.js",
     "serve": "npm run serve:server",
     "createDocs:js": "esdoc -c esdoc.json",
     "start": "npm run serve",
-    "prepare": "NODE_ENV=production && npm run build"
+    "prepare": "export NODE_ENV=production && npm run build"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.3",

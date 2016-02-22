@@ -2,18 +2,18 @@ const express = require('express');
 const calls = require('./calls');
 const { UPDATE_FREQUENCY } = require('./constants');
 
-const sockets = [];
+let sockets = [];
 let updateTimeout;
 let isUpdating = false;
 const { DEMO } = process.env;
-const isDemo = !!DEMO;
+const isDemo = DEMO === 'true';
 const hiddenSockets = [];
 
 const that = {};
 
 that.emitToAllSockets = (eventName, data) => {
 	sockets.forEach((socket) => {
-		socket.emit(eventName, data);
+		socket.originalInstance.emit(eventName, data);
 	});
 };
 
@@ -48,52 +48,68 @@ that.updateIssPosition = () => {
 			const { countryCode } = countryCodeRepsonse;
 			const hasToFetchCounrtyInfo = that.hasToFetchCounrtyInfo(countryCode);
 			if (hasToFetchCounrtyInfo) {
-				that.updateSocketsCoutries(sockets, countryCode);
+				that.updateSocketsCoutries(countryCode);
 				that.updateCountryInformations(countryCode);
+			} else {
+				that.updateWithDelay();
 			}
 			that.emitToAllSockets('issPositionUpdate', countryCodeRepsonse);
-			that.updateWithDelay();
 		});
 };
 
 that.hasToFetchCounrtyInfo = (country) => {
-	const socketsWithcountries = sockets.filter((socket) => !!socket.country);
-	const countryNowIsValid = that.isValidCountry(country);
-	return sockets.every(socket => {
-		const countryBeforeIsValid = that.isValidCountry(country);
-		return !countryBeforeIsValid && countryNowIsValid ? true : false;
+	if (!that.isValidCountry(country)) {
+		return false;
+	}
+	const allSocketsSetToThisCountry = !sockets.every(socket => {
+		console.log(`Socket country: ${socket.country} vs Actual country: ${country}`);
+		return socket.country === country;
 	});
+	return allSocketsSetToThisCountry;
 };
 
 that.updateSocketsCoutries = (countryCode) => {
-	sockets.forEach((socket) => {
+	sockets = sockets.map((socket) => {
 		socket.country = countryCode;
+		return socket;
 	});
 };
 
-that.isValidCountry = country =>
-	typeof country === 'string' && country.length === 2;
+that.isValidCountry = (country) => {
+	const valid = typeof country === 'string' && country.length === 2;
+	if (!valid) {
+		console.error('Invalid country ' + country);
+	}
+	return valid;
+};
 
 that.handleSockets = (io) => {
 	io.sockets.on('connection', (newSocket) => {
 		if (!isUpdating) {
 			that.updateIssPosition();
 		}
-		sockets.push(newSocket);
+		const socketObject = {
+			id: sockets.length,
+			country: null,
+			originalInstance: newSocket
+		};
+		sockets.push(socketObject);
 		newSocket.on('disconnect', () => {
-			sockets.splice(sockets.indexOf(newSocket), 1);
+			sockets.splice(sockets.indexOf(socketObject), 1);
 			if (sockets.length === 0) {
 				that.stopUpdate();
 			}
 		});
 		newSocket.on('windowHidden', () => {
-			hiddenSockets.push(newSocket);
+			console.log('windowHidden event triggered from client');
+			hiddenSockets.push(socketObject);
 			if (hiddenSockets.length === sockets.length) {
 				that.stopUpdate();
 			}
 		});
 		newSocket.on('windowShown', () => {
-			hiddenSockets.splice(hiddenSockets.indexOf(newSocket), 1);
+			console.log('windowShown event triggered from client');
+			hiddenSockets.splice(hiddenSockets.indexOf(socketObject), 1);
 			that.updateIssPosition();
 		});
 	});
