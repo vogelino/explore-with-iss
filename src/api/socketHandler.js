@@ -41,7 +41,8 @@ that.updateIssPosition = () => {
 	calls.getIssCountryCode()
 		.done((countryCodeRepsonse) => {
 			const { countryCode } = countryCodeRepsonse;
-			if (countryCode !== null || countryCode !== lastCounrtyCode) {
+			const hasToFetchCounrtyInfo = that.hasToFetchCounrtyInfo(lastCounrtyCode, countryCode);
+			if (hasToFetchCounrtyInfo) {
 				lastCounrtyCode = countryCode;
 				that.updateCountryInformations(countryCode);
 			}
@@ -50,13 +51,21 @@ that.updateIssPosition = () => {
 		});
 };
 
+that.hasToFetchCounrtyInfo = (countryBefore, countryNow) => {
+	const countryBeforeIsValid = that.isValidCountry(countryBefore);
+	const countryNowIsValid = that.isValidCountry(countryNow);
+	return !countryBeforeIsValid && countryNowIsValid ? true : false;
+};
+
+that.isValidCountry = country => typeof country === 'string' && country.length === 2;
+
 that.handleSockets = (io) => {
-	io.on('connection', (newSocket) => {
+	io.sockets.on('connection', (newSocket) => {
 		if (!isUpdating) {
 			that.updateIssPosition();
 		}
 		sockets.push(newSocket);
-		io.on('disconnect', () => {
+		newSocket.on('disconnect', () => {
 			sockets.splice(sockets.indexOf(newSocket), 1);
 			if (sockets.length === 0) {
 				that.stopUpdate();
