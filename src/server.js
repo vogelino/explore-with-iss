@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import Root from './client/js/containers/Root';
 import { handleSockets } from './api/socketHandler';
 import request from 'request';
+import fs from 'fs';
 
 import routes from './routes';
 
@@ -18,13 +19,14 @@ const app = express();
 
 app.use(express.static(__dirname + '/../public'));
 
-const renderFullPage = (html, title, meta, state) => {
+const renderFullPage = (html, title, meta, link, state) => {
 	return `
 	<!doctype html>
 	<html itemscope itemtype="http://schema.org/Article">
 		<head>
 			${title}
 			${meta}
+			${link}
 			<link href="/bundle.css" rel="stylesheet"></link>
 		</head>
 		<body>
@@ -50,15 +52,12 @@ const renderFullPage = (html, title, meta, state) => {
 };
 
 const handleRender = (req, res, props) => {
-	request.get({
-		url: 'https://api.github.com/repos/vogelino/explore-with-iss/readme',
-		headers: { 'User-Agent': 'request' }
-	}, (err, response, body) => {
-		if (!err && response.statusCode === 200) {
-			const parsedResponse = JSON.parse(body).content;
-			const markdownString = new Buffer(parsedResponse, 'base64').toString();
-			console.log(markdownString);
-			initialState.aboutContent = markdownString;
+	fs.readFile(__dirname + '/../readme.md', (err, fileContent) => {
+		if (!err) {
+			console.log(fileContent.toString());
+			initialState.aboutContent = fileContent.toString();
+		} else {
+			console.log('ERR:', err);
 		}
 		const store = configureStore(initialState);
 		const html = renderToString(
@@ -66,10 +65,10 @@ const handleRender = (req, res, props) => {
 				<RouterContext {...props} />
 			</Root>
 		);
-		const { title, meta } = Helmet.rewind();
+		const { title, meta, link } = Helmet.rewind();
 
 		const finalState = store.getState();
-		res.send(renderFullPage(html, title, meta, finalState));
+		res.send(renderFullPage(html, title, meta, link, finalState));
 	});
 };
 
