@@ -14,6 +14,8 @@ module.exports = {
 			'10&l=en&src=news&f=json&key=${process.env.FAROO_KEY}`
 	},
 	UPDATE_FREQUENCY: 1500,
-	DEMO_LAT_LNG: { latitude: -7.364855, longitude: -48.432910 } // Brasil
+	DEMO_LAT_LNG: {
+		latitude: process.env.DEMO_LAT || -7.364855,
+		longitude: process.env.DEMO_LNG || -48.432910 } // Brasil
 };
 

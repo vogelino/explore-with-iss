@@ -5,7 +5,6 @@ let GEOjson = require('./staticData/counrtyShapes.min.json');
 let Pics = require('./staticData/issPics-formatted.min.json');
 
 const calls = {};
-const demo = false;
 
 const requestDeferred = (url) => {
 	const dfd = new Deferred();
@@ -46,7 +45,7 @@ calls.getIssPosition = () => {
 			/* eslint-disable camelcase */
 			let issPosition = JSON.parse(data).iss_position;
 			/* eslint-disable camelcase */
-			if (demo === true) {
+			if (process.env.DEMO) {
 				console.log('SHOWING OVERRIDEN DATA FOR DEMO:', constants.DEMO_LAT_LNG);
 				issPosition = constants.DEMO_LAT_LNG;
 			}

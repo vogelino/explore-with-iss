@@ -46,8 +46,10 @@ that.updateIssPosition = () => {
 				lastCounrtyCode = countryCode;
 				that.updateCountryInformations(countryCode);
 			}
-			that.emitToAllSockets('issPositionUpdate', countryCodeRepsonse);
-			that.updateWithDelay();
+			if (!process.env.DEMO) {
+				that.emitToAllSockets('issPositionUpdate', countryCodeRepsonse);
+				that.updateWithDelay();
+			}
 		});
 };
 
