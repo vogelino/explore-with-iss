@@ -1,13 +1,5 @@
 import * as actionTypes from '../constants/ActionTypes';
-
-const initialState = {
-	country: {},
-	iss: {},
-	isIssOverflyingCountry: false,
-	isIssPositionIdentified: false,
-	countryColor: '#fff',
-	selectedPicture: {}
-};
+import initialState from './initialState';
 
 export default function dataVis(state = initialState, action) {
 	switch (action.type) {
@@ -33,6 +25,12 @@ export default function dataVis(state = initialState, action) {
 
 		case actionTypes.CLOSE_SLIDESHOW:
 			return Object.assign({}, state, { selectedPicture: {} });
+
+		case actionTypes.OPEN_ABOUT:
+			return Object.assign({}, state, { isAboutOpen: true });
+
+		case actionTypes.CLOSE_ABOUT:
+			return Object.assign({}, state, { isAboutOpen: false });
 
 		default:
 			return state;

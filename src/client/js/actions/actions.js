@@ -27,3 +27,11 @@ export function openSlideshow(picture) {
 export function closeSlideshow() {
 	return { type: types.CLOSE_SLIDESHOW };
 }
+
+export function openAbout() {
+	return { type: types.OPEN_ABOUT };
+}
+
+export function closeAbout() {
+	return { type: types.CLOSE_ABOUT };
+}
