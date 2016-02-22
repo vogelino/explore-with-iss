@@ -35,6 +35,10 @@ var config = {
 			{
 				test: /\.(jpg|png|gif|svg)$/,
 				loader: 'file-loader'
+			},
+			{
+				test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+				loader: 'file-loader'
 			}
 		]
 	},
