@@ -19,7 +19,7 @@ class MainMap extends Component {
 		if (typeof window !== 'undefined') {
 			return this.getMap.bind(this)();
 		}
-		return <div className="loading-indicator">Retrieving ISS position...</div>;
+		return <div className="loading-indicator"></div>;
 	}
 	getMap() {
 		const L = require('leaflet');
