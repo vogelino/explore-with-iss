@@ -9,6 +9,17 @@ const fullDescription = `A live data visualization to explore and discover` +
 	`countries by following ISS in its route ` +
 	`| © ${new Date().getFullYear()} by vogelino.com`;
 const contentUrl = typeof window === 'undefined' ? 'https://explore-with-iss.herokuapp.com/' : window.location.href;
+const allKeywords = [
+	'International Space Station',
+	'Live position',
+	'Data visualization',
+	'Counrtry informations',
+	'Data analysis',
+	'Web app',
+	'Fh Potsdam',
+	'Vogelino',
+	'Lucas Vogel'
+];
 
 export default () =>
 	<Helmet
@@ -16,16 +27,19 @@ export default () =>
 		titleTemplate={`${shortTitle} - %s`}
 		meta={[
 			{ name: 'description', content: fullDescription },
-			{ property: 'og:type', content: 'singlepage-webapp' },
+			{ property: 'og:type', content: 'article' },
 			{ name: 'msapplication-TileColor', content: '#da532c' },
 			{ name: 'msapplication-TileImage', content: `/mstile-144x144.png?v=${faviconVersion}` },
 			{ name: 'theme-color', content: '#2e2e2e' },
+			{ name: 'keywords', content: allKeywords.join(', ') },
+			{ name: 'news_keywords', content: allKeywords.join(', ') },
 
 			{ itemprop: 'name', content: fullTitle },
 			{ itemprop: 'description', content: fullDescription },
 			{ itemprop: 'image', content: `${contentUrl}social-thumbnail.jpg` },
 
 			{ name: 'twitter:card', content: `${contentUrl}social-thumbnail.jpg` },
+			{ name: 'twitter:image', content: `${contentUrl}social-thumbnail.jpg` },
 			{ name: 'twitter:site', content: 'article' },
 			{ name: 'twitter:title', content: contentUrl },
 			{ name: 'twitter:description', content: fullDescription },
@@ -33,11 +47,13 @@ export default () =>
 
 			{ property: 'og:title', content: fullTitle },
 			{ property: 'og:type', content: 'article' },
+			{ property: 'og:locale', content: 'en' },
 			{ property: 'og:url', content: contentUrl },
 			{ property: 'og:image', content: `${contentUrl}social-thumbnail.jpg` },
 			{ property: 'og:description', content: fullDescription },
 			{ property: 'og:site_name', content: shortTitle },
-			{ property: 'fb:admins', content: '186064998091648' }
+			{ property: 'fb:appid', content: '186064998091648' },
+			{ property: 'fb:admins', content: '1308822218' }
 		]}
 		link={[
 			{ rel: 'apple-touch-icon', sizes: '57x57', href: `/apple-touch-icon-57x57.png?v=${faviconVersion}` },
@@ -57,6 +73,7 @@ export default () =>
 			{ rel: 'icon', type: 'image/png', href: `/favicon-16x16.png?v=${faviconVersion}`, sizes: '16x16' },
 			{ rel: 'manifest', href: `/manifest.json?v=${faviconVersion}` },
 			{ rel: 'mask-icon', href: `/safari-pinned-tab.svg?v=${faviconVersion}`, color: '#5bbad5' },
-			{ rel: 'shortcut icon', href: `/favicon.ico?v=${faviconVersion}` }
+			{ rel: 'shortcut icon', href: `/favicon.ico?v=${faviconVersion}` },
+			{ rel: 'author', href: 'http://www.vogelino.com' }
 		]}
 	/>;
