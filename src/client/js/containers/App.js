@@ -8,6 +8,7 @@ import MainMap from '../components/MainMap';
 import Sidebar from '../components/Sidebar';
 import Slideshow from '../components/Slideshow';
 import MetaTags from '../components/MetaTags';
+import About from '../components/About';
 
 class App extends Component {
 	render() {
@@ -19,6 +20,7 @@ class App extends Component {
 				<MainMap />
 				<Sidebar />
 				<Slideshow />
+				<About />
 			</div>
 		);
 	}

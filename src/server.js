@@ -6,9 +6,11 @@ import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import Helmet from 'react-helmet';
 import configureStore from './client/js/store/configureStore';
+import initialState from './client/js/reducers/initialState';
 import { Provider } from 'react-redux';
 import Root from './client/js/containers/Root';
 import { handleSockets } from './api/socketHandler';
+import request from 'request';
 
 import routes from './routes';
 
@@ -16,7 +18,7 @@ const app = express();
 
 app.use(express.static(__dirname + '/../public'));
 
-const renderFullPage = (html, title, meta, initialState) => {
+const renderFullPage = (html, title, meta, state) => {
 	return `
 	<!doctype html>
 	<html itemscope itemtype="http://schema.org/Article">
@@ -28,7 +30,7 @@ const renderFullPage = (html, title, meta, initialState) => {
 		<body>
 			<div id="root">${html}</div>
 			<script>
-				window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+				window.__INITIAL_STATE__ = ${JSON.stringify(state)}
 			</script>
 			<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
 			<script src="/bundle.js" type="text/javascript"></script>
@@ -48,16 +50,27 @@ const renderFullPage = (html, title, meta, initialState) => {
 };
 
 const handleRender = (req, res, props) => {
-	const store = configureStore();
-	const html = renderToString(
-		<Root store={store}>
-			<RouterContext {...props} />
-		</Root>
-	);
-	const { title, meta } = Helmet.rewind();
+	request.get({
+		url: 'https://api.github.com/repos/vogelino/explore-with-iss/readme',
+		headers: { 'User-Agent': 'request' }
+	}, (err, response, body) => {
+		if (!err && response.statusCode === 200) {
+			const parsedResponse = JSON.parse(body).content;
+			const markdownString = new Buffer(parsedResponse, 'base64').toString();
+			console.log(markdownString);
+			initialState.aboutContent = markdownString;
+		}
+		const store = configureStore(initialState);
+		const html = renderToString(
+			<Root store={store}>
+				<RouterContext {...props} />
+			</Root>
+		);
+		const { title, meta } = Helmet.rewind();
 
-	const initialState = store.getState();
-	res.send(renderFullPage(html, title, meta, initialState));
+		const finalState = store.getState();
+		res.send(renderFullPage(html, title, meta, finalState));
+	});
 };
 
 app.use((req, res) => {
