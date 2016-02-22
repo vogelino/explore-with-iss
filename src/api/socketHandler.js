@@ -87,6 +87,7 @@ that.handleSockets = (io) => {
 			}
 		});
 		newSocket.on('windowHidden', () => {
+			that.stopUpdate();
 			hiddenSockets.push(newSocket);
 		});
 		newSocket.on('windowShown', () => {
