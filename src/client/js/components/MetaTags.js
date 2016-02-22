@@ -23,9 +23,9 @@ export default () =>
 
 			{ itemprop: 'name', content: fullTitle },
 			{ itemprop: 'description', content: fullDescription },
-			{ itemprop: 'image', content: `${contentUrl}social-thumnail.jpg` },
+			{ itemprop: 'image', content: `${contentUrl}social-thumbnail.jpg` },
 
-			{ name: 'twitter:card', content: `${contentUrl}social-thumnail.jpg` },
+			{ name: 'twitter:card', content: `${contentUrl}social-thumbnail.jpg` },
 			{ name: 'twitter:site', content: 'article' },
 			{ name: 'twitter:title', content: contentUrl },
 			{ name: 'twitter:description', content: fullDescription },
@@ -34,7 +34,7 @@ export default () =>
 			{ property: 'og:title', content: fullTitle },
 			{ property: 'og:type', content: 'article' },
 			{ property: 'og:url', content: contentUrl },
-			{ property: 'og:image', content: `${contentUrl}social-thumnail.jpg` },
+			{ property: 'og:image', content: `${contentUrl}social-thumbnail.jpg` },
 			{ property: 'og:description', content: fullDescription },
 			{ property: 'og:site_name', content: shortTitle },
 			{ property: 'fb:admins', content: '186064998091648' }
