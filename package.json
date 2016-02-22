@@ -20,10 +20,7 @@
     "build:client:images:favicons": "cp -R ./src/client/images/favicons/** ./public",
     "build:client:images": "npm run build:client:images:flags & npm run build:client:images:favicons",
     "build:client:js": "./node_modules/.bin/webpack",
-    "build:client:styles:stylus": "stylus ./src/client/styles/index.styl -o ./public/bundle.css",
-    "build:client:styles:autoprefixer": "./node_modules/.bin/postcss --use autoprefixer ./public/bundle.css -o ./public/bundle.css",
-    "build:client:styles": "npm run build:client:styles:stylus && npm run build:client:styles:autoprefixer",
-    "build:client": "npm run build:client:js & npm run build:client:images & npm run build:client:styles",
+    "build:client": "npm run build:client:js & npm run build:client:images",
     "build": "npm run clean && npm run build:client",
     "watch": "npm run lint:js && npm run build && npm run watch:server & npm run watch:client",
     "serve:server": "./node_modules/.bin/babel-node ./src/server.js",
@@ -33,16 +30,19 @@
     "deploy": "npm run build && git push heroku master && heroku open"
   },
   "devDependencies": {
-    "autoprefixer": "^6.3.3",
     "babel-eslint": "^5.0.0-beta8",
     "babel-loader": "^6.2.0",
     "babel-plugin-transform-runtime": "^6.3.13",
+    "css-loader": "^0.23.1",
     "eslint": "^2.2.0",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
+    "nib": "^1.1.0",
     "nodemon": "^1.9.0",
-    "postcss": "^5.0.16",
     "postcss-cli": "^2.5.1",
+    "style-loader": "^0.13.0",
     "stylus": "^0.53.0",
+    "stylus-loader": "^1.5.1",
     "webpack": "^1.12.13"
   },
   "dependencies": {
