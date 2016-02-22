@@ -19,7 +19,7 @@ app.use(express.static(__dirname + '/../public'));
 const renderFullPage = (html, title, meta, initialState) => {
 	return `
 	<!doctype html>
-	<html>
+	<html itemscope itemtype="http://schema.org/Article">
 		<head>
 			${title}
 			${meta}
