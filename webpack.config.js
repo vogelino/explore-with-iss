@@ -48,7 +48,7 @@ var config = {
 	plugins: [
 		new webpack.NoErrorsPlugin(),
 		new ExtractTextPlugin('bundle.css', { allChunks: true }),
-		new webpack.DefinePlugin({ 'process.env.NODE_ENV': process.env.NODE_ENV })
+		new webpack.DefinePlugin({ 'process.env.NODE_ENV': `"${process.env.NODE_ENV}"` })
 	],
 	stats: {
 		colors: true
