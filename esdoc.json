@@ -1,5 +1,5 @@
 {
-	"source": "./src/js",
+	"source": "./src",
 	"destination": "./documentation/esdoc",
 	"index": "./readme.md",
 	"package": "./package.json",
