@@ -27527,11 +27527,7 @@
 				if (typeof window !== 'undefined') {
 					return this.getMap.bind(this)();
 				}
-				return _react2.default.createElement(
-					'div',
-					{ className: 'loading-indicator' },
-					'Retrieving ISS position...'
-				);
+				return _react2.default.createElement('div', { className: 'loading-indicator' });
 			}
 		}, {
 			key: 'getMap',

@@ -485,6 +485,18 @@ a.active,
 a:active {
   color: #d3d3d3;
 }
+.loading-indicator {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #242426;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-background-size: auto auto;
+  -moz-background-size: auto auto;
+  background-size: auto auto;
+  background-image: url("http://jxnblk.com/loading/loading-bubbles.svg");
+}
 .main-map,
 .main-map > div {
   z-index: 1;
