@@ -48,13 +48,14 @@
     "webpack": "^1.12.13"
   },
   "dependencies": {
-    "babel-core": "^6.3.17",
     "babel-cli": "^6.5.1",
+    "babel-core": "^6.3.17",
     "babel-polyfill": "^6.3.14",
-    "babel-runtime": "^6.3.19",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
+    "babel-runtime": "^6.3.19",
+    "config": "^1.19.0",
     "d3": "^3.5.14",
     "deferred-js": "^1.0.2",
     "express": "^4.13.4",
