@@ -57,7 +57,7 @@ that.handleSockets = (io) => {
 		}
 		sockets.push(newSocket);
 		io.on('disconnect', () => {
-			sockets.splice(newSocket);
+			sockets.splice(sockets.indexOf(newSocket), 1);
 			if (sockets.length === 0) {
 				that.stopUpdate();
 			}
