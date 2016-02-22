@@ -8,7 +8,6 @@ import MainMap from '../components/MainMap';
 import Sidebar from '../components/Sidebar';
 import Slideshow from '../components/Slideshow';
 import MetaTags from '../components/MetaTags';
-import visibility from 'visibility';
 
 class App extends Component {
 	render() {
@@ -53,7 +52,7 @@ class App extends Component {
 				actions.setCountryInfos(data);
 				actions.defineIfIssIsOverflyingCountry(true);
 			});
-			const watcher = visibility();
+			const watcher = require('visibility')();
 			watcher.on('hide', () => {
 				socket.emit('windowHidden');
 			});
