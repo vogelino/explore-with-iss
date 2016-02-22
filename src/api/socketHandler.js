@@ -83,6 +83,7 @@ that.handleSockets = (io) => {
 		});
 		newSocket.on('windowShown', () => {
 			hiddenSockets.splice(hiddenSockets.indexOf(newSocket), 1);
+			that.updateIssPosition();
 		});
 	});
 };
