@@ -57,7 +57,8 @@ that.hasToFetchCounrtyInfo = (countryBefore, countryNow) => {
 	return !countryBeforeIsValid && countryNowIsValid ? true : false;
 };
 
-that.isValidCountry = country => typeof country === 'string' && country.length === 2;
+that.isValidCountry = country =>
+	typeof country === 'string' && country.length === 2;
 
 that.handleSockets = (io) => {
 	io.sockets.on('connection', (newSocket) => {
