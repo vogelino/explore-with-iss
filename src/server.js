@@ -1,26 +1,24 @@
+/* eslint-disable no-console */
 import express from 'express';
 import http from 'http';
-
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import Helmet from 'react-helmet';
+import fs from 'fs';
+import path from 'path';
 import configureStore from './client/js/store/configureStore';
 import initialState from './client/js/reducers/initialState';
-import { Provider } from 'react-redux';
 import Root from './client/js/containers/Root';
 import { handleSockets } from './api/socketHandler';
-import request from 'request';
-import fs from 'fs';
 
 import routes from './routes';
 
 const app = express();
 
-app.use(express.static(__dirname + '/../public'));
+app.use(express.static(path.join(__dirname, '/../public')));
 
-const renderFullPage = (html, title, meta, link, state) => {
-	return `
+const renderFullPage = (html, title, meta, link, state) => `
 	<!doctype html>
 	<html itemscope itemtype="http://schema.org/Article">
 		<head>
@@ -48,15 +46,15 @@ const renderFullPage = (html, title, meta, link, state) => {
 			</script>
 		</body>
 	</html>
-	`;
-};
+`;
 
 const handleRender = (req, res, props) => {
-	fs.readFile(__dirname + '/../readme.md', (err, fileContent) => {
+	fs.readFile(path.join(__dirname, '/../readme.md'), (err, fileContent) => {
 		if (!err) {
 			console.log(fileContent.toString());
 			initialState.aboutContent = fileContent.toString();
-		} else {
+		}
+		else {
 			console.log('ERR:', err);
 		}
 		const store = configureStore(initialState);
@@ -76,11 +74,14 @@ app.use((req, res) => {
 	match({ routes, location: req.url }, (err, redirectLocation, props) => {
 		if (err) {
 			res.status(500).send(err.message);
-		} else if (redirectLocation) {
+		}
+		else if (redirectLocation) {
 			res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-		} else if (props) {
+		}
+		else if (props) {
 			handleRender(req, res, props);
-		} else {
+		}
+		else {
 			res.sendStatus(404);
 		}
 	});
@@ -90,9 +91,8 @@ const server = http.createServer(app);
 
 const port = process.env.PORT || 3003;
 server.listen(port);
-server.on('listening', () => {
-	console.log(`Listening on ${port}`);
-});
+server.on('listening', () => console.log(`Listening on ${port}`));
 
 const io = require('socket.io')(server);
+
 handleSockets(io);
