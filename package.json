@@ -47,9 +47,9 @@
     "postcss": "^5.0.16",
     "postcss-cli": "^2.5.1",
     "style-loader": "^0.13.0",
-    "stylus": "^0.53.0",
-    "stylus-loader": "^1.5.1",
-    "webpack": "^1.12.13"
+    "stylus": "^0.54.5",
+    "stylus-loader": "^2.4.0",
+    "webpack": "^1.14.0"
   },
   "dependencies": {
     "babel-cli": "^6.5.1",
