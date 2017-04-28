@@ -1,4 +1,4 @@
-const express = require('express');
+/* eslint-disable no-console */
 const calls = require('./calls');
 const { UPDATE_FREQUENCY } = require('./constants');
 
@@ -34,7 +34,6 @@ that.updateCountryInformations = (countryCode) => {
 	calls.getCountryInfo(countryCode)
 		.done((data) => {
 			that.emitToAllSockets('issCountryUpdate', data);
-
 			that.updateWithDelay();
 		});
 };
@@ -50,7 +49,8 @@ that.updateIssPosition = () => {
 			if (hasToFetchCounrtyInfo) {
 				that.updateSocketsCoutries(countryCode);
 				that.updateCountryInformations(countryCode);
-			} else {
+			}
+			else {
 				that.updateWithDelay();
 			}
 			that.emitToAllSockets('issPositionUpdate', countryCodeRepsonse);
@@ -61,24 +61,21 @@ that.hasToFetchCounrtyInfo = (country) => {
 	if (!that.isValidCountry(country)) {
 		return false;
 	}
-	const allSocketsSetToThisCountry = !sockets.every(socket => {
+	const allSocketsSetToThisCountry = !sockets.every((socket) => {
 		console.log(`Socket country: ${socket.country} vs Actual country: ${country}`);
 		return socket.country === country;
 	});
 	return allSocketsSetToThisCountry;
 };
 
-that.updateSocketsCoutries = (countryCode) => {
-	sockets = sockets.map((socket) => {
-		socket.country = countryCode;
-		return socket;
-	});
+that.updateSocketsCoutries = (country) => {
+	sockets = sockets.map((socket) => Object.assign({}, socket, { country }));
 };
 
 that.isValidCountry = (country) => {
 	const valid = typeof country === 'string' && country.length === 2;
 	if (!valid) {
-		console.error('Invalid country ' + country);
+		console.error(`Invalid country ${country}`);
 	}
 	return valid;
 };
@@ -91,7 +88,7 @@ that.handleSockets = (io) => {
 		const socketObject = {
 			id: sockets.length,
 			country: null,
-			originalInstance: newSocket
+			originalInstance: newSocket,
 		};
 		sockets.push(socketObject);
 		newSocket.on('disconnect', () => {
@@ -115,6 +112,4 @@ that.handleSockets = (io) => {
 	});
 };
 
-module.exports = {
-	handleSockets: that.handleSockets
-};
+module.exports = { handleSockets: that.handleSockets };

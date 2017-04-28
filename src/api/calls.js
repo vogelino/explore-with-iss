@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 const Deferred = require('deferred-js');
 const request = require('request');
 const constants = require('./constants');
-let GEOjson = require('./staticData/counrtyShapes.min.json');
-let Pics = require('./staticData/issPics-formatted.min.json');
+const GEOjson = require('./staticData/counrtyShapes.min.json');
+const Pics = require('./staticData/issPics-formatted.min.json');
 
 const calls = {};
 const { NODE_ENV, DEMO } = process.env;
@@ -18,7 +19,8 @@ const requestDeferred = (url) => {
 		}
 		if (!err && response.statusCode !== 200) {
 			dfd.reject(body);
-		} else {
+		}
+		else {
 			dfd.reject(err);
 		}
 	});
@@ -35,7 +37,7 @@ calls.getIssPosition = () => {
 
 		return dfd.resolve({
 			latitude: issPosition.latitude,
-			longitude: issPosition.longitude
+			longitude: issPosition.longitude,
 		}).promise();
 	}
 
@@ -43,11 +45,11 @@ calls.getIssPosition = () => {
 	requestDeferred(constants.OPEN_NOTIFY.URL)
 		.done((data) => {
 			/* eslint-disable camelcase */
-			let issPosition = JSON.parse(data).iss_position;
+			const issPosition = JSON.parse(data).iss_position;
 			/* eslint-disable camelcase */
 			dfd.resolve({
 				latitude: issPosition.latitude,
-				longitude: issPosition.longitude
+				longitude: issPosition.longitude,
 			});
 		})
 		.fail(dfd.reject);
@@ -79,7 +81,7 @@ calls.getIssCountryCode = () => {
 				.replace('__lng__', data.longitude)
 				.replace('__username__', constants.GEONAMES.USERNAME);
 
-			console.log('Fetching the country code');
+			console.log('Fetching the country code', url);
 			requestDeferred(url)
 				.done((response) => {
 					const trimmedResponse = response.trim();
@@ -88,7 +90,7 @@ calls.getIssCountryCode = () => {
 					dfd.resolve({
 						latitude: data.latitude,
 						longitude: data.longitude,
-						countryCode: finalCountryCode
+						countryCode: finalCountryCode,
 					});
 				})
 				.fail((err) => {
@@ -96,7 +98,7 @@ calls.getIssCountryCode = () => {
 					dfd.resolve({
 						latitude: data.latitude,
 						longitude: data.longitude,
-						countryCode: null
+						countryCode: null,
 					});
 				});
 		})
@@ -144,9 +146,9 @@ calls.getCountryInfo = (countryCode) => {
 
 			Deferred.when(farooDfd)
 				.then((farooResponse) => {
-					data.geoJson = countryFeature ? countryFeature : null;
+					data.geoJson = countryFeature || null;
 					data.news = farooResponse;
-					data.issPictures = pictures ? pictures : [];
+					data.issPictures = pictures || [];
 
 					console.log('News successfully fetched');
 					mainDfd.resolve(data);

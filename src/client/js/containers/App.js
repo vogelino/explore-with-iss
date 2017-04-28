@@ -11,19 +11,6 @@ import MetaTags from '../components/MetaTags';
 import About from '../components/About';
 
 class App extends Component {
-	render() {
-		const { isIssOverflyingCountry } = this.props;
-
-		return (
-			<div className={ isIssOverflyingCountry ? 'app has-country' : 'app'}>
-				<MetaTags />
-				<MainMap />
-				<Sidebar />
-				<Slideshow />
-				<About />
-			</div>
-		);
-	}
 	componentDidMount() {
 		this.initSockets.bind(this)();
 	}
@@ -62,6 +49,19 @@ class App extends Component {
 				socket.emit('windowShown');
 			});
 		}
+	}
+	render() {
+		const { isIssOverflyingCountry } = this.props;
+
+		return (
+			<div className={ isIssOverflyingCountry ? 'app has-country' : 'app'}>
+				<MetaTags />
+				<MainMap />
+				<Sidebar />
+				<Slideshow />
+				<About />
+			</div>
+		);
 	}
 }
 
